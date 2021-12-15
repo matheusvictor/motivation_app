@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Motivation App</string>
+    <string name="whats_your_name">Qual é o seu nome?</string>
+    <string name="send">Enviar</string>
+    <string name="lets_go">Vamos lá?</string>
+</resources>
