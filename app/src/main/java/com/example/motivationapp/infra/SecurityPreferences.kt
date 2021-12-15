@@ -12,7 +12,8 @@ class SecurityPreferences(context: Context) {
         mSharedPreferences.edit().putString(key, value).apply()
     }
 
-    fun getStoredString(key: String) {
-
+    fun getStoredString(key: String): String {
+        // If 'key' don't have a value, return a "" String. And, if this return is null, return a "" String
+        return mSharedPreferences.getString(key, "") ?: ""
     }
 }
