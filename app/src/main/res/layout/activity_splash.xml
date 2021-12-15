@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:text="Vamos começar?"
+        android:text="@string/lets_go"
         android:textColor="#fff"
         android:textSize="32sp" />
 
@@ -21,20 +21,21 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:gravity="center"
-        android:hint="Qual é o seu nome?"
+        android:hint="@string/whats_your_name"
         android:inputType="text"
         android:textColor="@color/white"
         android:textColorHint="@color/white"
         android:textSize="20sp" />
 
     <Button
+        android:id="@+id/buttonSend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="16dp"
         android:background="@color/colorAccent"
-        android:text="Salvar"
+        android:text="@string/send"
         android:textColor="@color/white" />
 
 </RelativeLayout>
