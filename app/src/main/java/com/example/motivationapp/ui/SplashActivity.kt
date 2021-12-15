@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import com.example.motivationapp.R
+import com.example.motivationapp.infra.MotivationAppConstants
 import com.example.motivationapp.infra.SecurityPreferences
 
 class SplashActivity : AppCompatActivity(), View.OnClickListener {
@@ -44,7 +45,7 @@ class SplashActivity : AppCompatActivity(), View.OnClickListener {
         if (inputedName.isBlank()) {
             Toast.makeText(this, "This field can't be empty", Toast.LENGTH_SHORT).show()
         } else {
-            mSecurityPreferences.storeString("username", inputedName)
+            mSecurityPreferences.storeString(MotivationAppConstants.KEY.USER_NAME, inputedName)
             // Register a intent to open the MainActivity
             val intentMainActivity = Intent(this, MainActivity::class.java)
             // Initialize MainActivity
