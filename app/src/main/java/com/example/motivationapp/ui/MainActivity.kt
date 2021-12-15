@@ -25,5 +25,9 @@ class MainActivity : AppCompatActivity() {
         val username = mSecurityPreferences.getStoredString(MotivationAppConstants.KEY.USER_NAME)
 
         textUsername.text = "Hello, ${username}"
+
+        if (supportActionBar != null) {
+            supportActionBar!!.hide()
+        }
     }
 }
