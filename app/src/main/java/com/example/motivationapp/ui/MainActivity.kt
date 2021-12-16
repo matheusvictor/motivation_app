@@ -10,15 +10,21 @@ import android.widget.TextView
 import com.example.motivationapp.R
 import com.example.motivationapp.infra.MotivationAppConstants
 import com.example.motivationapp.infra.SecurityPreferences
+import com.example.motivationapp.repository.Mock
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     // Initialize mSecurityPreferences
     private lateinit var mSecurityPreferences: SecurityPreferences
+    private var mPhraseFiltered: Int = MotivationAppConstants.PHRASES_FILTER.ALL
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        if (supportActionBar != null) {
+            supportActionBar!!.hide()
+        }
 
         // Instance mSecurityPreferences
         mSecurityPreferences = SecurityPreferences(this)
@@ -28,14 +34,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         textUsername.text = "Hello, ${username}"
 
-        if (supportActionBar != null) {
-            supportActionBar!!.hide()
-        }
-
         val buttonNewPhrase = findViewById<Button>(R.id.buttonNewPhrase).setOnClickListener(this)
-        val imageAll = findViewById<ImageView>(R.id.imageAll).setOnClickListener(this)
         val imageSun = findViewById<ImageView>(R.id.imageSun).setOnClickListener(this)
         val imageHappy = findViewById<ImageView>(R.id.imageHappy).setOnClickListener(this)
+        val imageAll = findViewById<ImageView>(R.id.imageAll)
+        imageAll.setOnClickListener(this)
+        imageAll.setColorFilter(resources.getColor(R.color.colorAccent))
+
+        generateNewPhrase()
     }
 
     override fun onClick(view: View) {
@@ -43,7 +49,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         val listWithFiltersID = listOf(R.id.imageAll, R.id.imageHappy, R.id.imageSun)
 
         if (id == R.id.buttonNewPhrase) {
-            //TODO
+            generateNewPhrase()
         } else if (id in listWithFiltersID) {
             handleFilter(id)
         }
@@ -62,13 +68,22 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         when (filter_value) {
             R.id.imageAll -> {
                 imageAll.setColorFilter(resources.getColor(R.color.colorAccent))
+                mPhraseFiltered = MotivationAppConstants.PHRASES_FILTER.ALL
             }
             R.id.imageSun -> {
                 imageSun.setColorFilter(resources.getColor(R.color.colorAccent))
+                mPhraseFiltered = MotivationAppConstants.PHRASES_FILTER.MORNING
             }
             R.id.imageHappy -> {
                 imageHappy.setColorFilter(resources.getColor(R.color.colorAccent))
+                mPhraseFiltered = MotivationAppConstants.PHRASES_FILTER.HAPPY
             }
         }
     }
+
+    private fun generateNewPhrase() {
+        var textPhrase = findViewById<TextView>(R.id.textPhrase)
+        textPhrase.text = Mock().getPhrase(mPhraseFiltered)
+    }
+
 }
