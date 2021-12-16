@@ -34,12 +34,18 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         textUsername.text = "Hello, ${username}"
 
-        val buttonNewPhrase = findViewById<Button>(R.id.buttonNewPhrase).setOnClickListener(this)
-        val imageSun = findViewById<ImageView>(R.id.imageSun).setOnClickListener(this)
-        val imageHappy = findViewById<ImageView>(R.id.imageHappy).setOnClickListener(this)
         val imageAll = findViewById<ImageView>(R.id.imageAll)
-        imageAll.setOnClickListener(this)
+        val imageHappy = findViewById<ImageView>(R.id.imageHappy)
+        val imageSun = findViewById<ImageView>(R.id.imageSun)
+        val buttonNewPhrase = findViewById<Button>(R.id.buttonNewPhrase)
+
+        // Preset color too imagemAll
         imageAll.setColorFilter(resources.getColor(R.color.colorAccent))
+
+        imageAll.setOnClickListener(this)
+        imageHappy.setOnClickListener(this)
+        imageSun.setOnClickListener(this)
+        buttonNewPhrase.setOnClickListener(this)
 
         generateNewPhrase()
     }
