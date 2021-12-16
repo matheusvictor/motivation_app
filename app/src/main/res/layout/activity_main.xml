@@ -84,7 +84,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="32dp"
-        android:background="@color/colorPrimary"
+        android:background="@drawable/ripple_button"
         android:text="@string/new_phrase"
         android:textColor="@color/white" />
 </RelativeLayout>
