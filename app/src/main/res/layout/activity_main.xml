@@ -20,7 +20,7 @@
             android:layout_margin="8dp"
             android:layout_weight="1"
             android:src="@drawable/ic_all"
-            app:tint="@color/white"></ImageView>
+            app:tint="@color/white"/>
 
         <ImageView
             android:id="@+id/imageHappy"
@@ -29,7 +29,7 @@
             android:layout_margin="8dp"
             android:layout_weight="1"
             android:src="@drawable/ic_happy"
-            app:tint="@color/white"></ImageView>
+            app:tint="@color/white"/>
 
         <ImageView
             android:id="@+id/imageSun"
@@ -38,7 +38,7 @@
             android:layout_margin="8dp"
             android:layout_weight="1"
             android:src="@drawable/ic_sun"
-            app:tint="@color/white"></ImageView>
+            app:tint="@color/white"/>
 
     </LinearLayout>
 
@@ -62,8 +62,8 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:text="Frase"
-        android:textSize="22sp"></TextView>
+        android:text="@string/phrase"
+        android:textSize="22sp" />
 
     <View
         android:id="@+id/simpleView"
@@ -73,7 +73,7 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_marginTop="32dp"
-        android:background="@color/colorAccent"></View>
+        android:background="@color/colorAccent" />
 
     <Button
         android:id="@+id/buttonNewPhrase"
@@ -83,6 +83,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="32dp"
         android:background="@color/colorPrimary"
-        android:text="New Phrase"
-        android:textColor="@color/white"></Button>
+        android:text="@string/new_phrase"
+        android:textColor="@color/white" />
 </RelativeLayout>
