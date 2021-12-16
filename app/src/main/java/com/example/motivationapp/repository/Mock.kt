@@ -5,6 +5,10 @@ import kotlin.random.Random
 
 data class Phrase(val description: String, val phraseCategory: Int)
 
+fun rand(start: Int, end: Int): Int {
+    return Random.nextInt(start, end)
+}
+
 class Mock {
 
     private val ALL: Int = MotivationAppConstants.PHRASES_FILTER.ALL
@@ -34,7 +38,7 @@ class Mock {
             mListPhrases.filter { (it.phraseCategory == category || category == ALL) }
 
         // Random number to select a phrase on list
-        val randonNumberOnList: Int = Random.nextInt(mListPhrases.size)
+        val randonNumberOnList: Int = rand(0, filteredPhrase.size - 1)
 
         // Return the phrase that have the position on list equals the generated number
         return filteredPhrase[randonNumberOnList].description
