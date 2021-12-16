@@ -31,8 +31,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         val textUsername = findViewById<TextView>(R.id.textUsername)
         val username = mSecurityPreferences.getStoredString(MotivationAppConstants.KEY.USER_NAME)
+        val temp_username =
+            mSecurityPreferences.getStoredString(MotivationAppConstants.KEY.TEMP_USER_NAME)
 
-        textUsername.text = "Hello, ${username}"
+        if (!username.isBlank()) {
+            textUsername.text = "Hello, ${username}"
+        } else {
+            textUsername.text = "Hello, ${temp_username}"
+        }
 
         val imageAll = findViewById<ImageView>(R.id.imageAll)
         val imageHappy = findViewById<ImageView>(R.id.imageHappy)

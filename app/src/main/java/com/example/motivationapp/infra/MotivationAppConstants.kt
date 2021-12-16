@@ -8,6 +8,7 @@ class MotivationAppConstants private constructor() {
 
     object KEY {
         val USER_NAME = "username"
+        val TEMP_USER_NAME = ""
     }
 
     object PHRASES_FILTER {
