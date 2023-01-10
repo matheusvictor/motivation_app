@@ -1,13 +1,16 @@
-package com.example.motivationapp.ui
+package com.example.motivationapp.ui.activity
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
-import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.example.motivationapp.R
+import com.example.motivationapp.databinding.ActivityMainBinding
 import com.example.motivationapp.infra.MotivationAppConstants
 import com.example.motivationapp.infra.SecurityPreferences
 import com.example.motivationapp.repository.Mock
@@ -18,26 +21,24 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var mSecurityPreferences: SecurityPreferences
     private var mPhraseFiltered: Int = MotivationAppConstants.PHRASES_FILTER.ALL
 
+    private val bindingActivityMain by lazy { ActivityMainBinding.inflate(layoutInflater) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        if (supportActionBar != null) {
-            supportActionBar!!.hide()
-        }
-
         // Instance mSecurityPreferences
         mSecurityPreferences = SecurityPreferences(this)
 
-        val textUsername = findViewById<TextView>(R.id.textUsername)
+        val textUsername = bindingActivityMain.textUsername
         val username = mSecurityPreferences.getStoredString(MotivationAppConstants.KEY.USER_NAME)
-        val temp_username =
+        val tempUsername =
             mSecurityPreferences.getStoredString(MotivationAppConstants.KEY.TEMP_USER_NAME)
 
-        if (!username.isBlank()) {
+        if (username.isNotBlank()) {
             textUsername.text = "Hello, ${username}"
         } else {
-            textUsername.text = "Hello, ${temp_username}"
+            textUsername.text = "Hello, ${tempUsername}"
         }
 
         val imageAll = findViewById<ImageView>(R.id.imageAll)
@@ -54,6 +55,22 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         buttonNewPhrase.setOnClickListener(this)
 
         generateNewPhrase()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_more_options, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        when (item.itemId) {
+            R.id.action_add_new_phrase -> {
+                val intent = Intent(this, PhraseFormActivity::class.java)
+                startActivity(intent)
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onClick(view: View) {
