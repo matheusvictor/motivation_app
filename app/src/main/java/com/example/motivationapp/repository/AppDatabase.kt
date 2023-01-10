@@ -5,6 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.motivationapp.model.Phrase
+import com.example.motivationapp.repository.dao.PhrasesDAO
 
 @Database(entities = [Phrase::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
