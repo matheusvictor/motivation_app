@@ -41,7 +41,7 @@
             android:layout_height="50dp"
             android:layout_margin="8dp"
             android:layout_weight="1"
-            android:src="@drawable/ic_sun"
+            android:src="@drawable/ic_morning_category"
             app:tint="@color/white" />
 
     </LinearLayout>
