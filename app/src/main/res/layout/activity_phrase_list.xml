@@ -25,9 +25,11 @@
         android:clickable="true"
         android:focusable="true"
 
-        android:text="Add New Phrase"
-        app:backgroundTint="@color/cardview_light_background"
-        app:icon="@drawable/ic_happy"
+        android:text="Add Phrase"
+        android:textColor="@color/white"
+        app:backgroundTint="@color/colorPrimary"
+        app:icon="@drawable/ic_action_add"
+        app:iconTint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
