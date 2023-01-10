@@ -69,6 +69,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 val intent = Intent(this, PhraseFormActivity::class.java)
                 startActivity(intent)
             }
+            R.id.action_list_all_phrases -> {
+                val intent = Intent(this, PhraseListActivity::class.java)
+                startActivity(intent)
+            }
         }
         return super.onOptionsItemSelected(item)
     }
