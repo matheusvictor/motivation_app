@@ -55,6 +55,7 @@
         android:layout_marginTop="64dp"
         android:textSize="18sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/scrollView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/linearMenu"
@@ -77,8 +78,8 @@
                 android:id="@+id/textPhrase"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:maxLines="10"
-                android:padding="16dp"
+                android:maxLines="8"
+                android:padding="13dp"
                 android:textAlignment="center"
                 android:textSize="22sp"
                 android:textStyle="italic"
@@ -98,8 +99,20 @@
                 app:layout_constraintTop_toBottomOf="@id/textPhrase"
                 tools:text="@tools:sample/lorem" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            <ImageView
+                android:id="@+id/iv_phrase_photo"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginTop="16dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/default_image"
+                app:layout_constraintEnd_toEndOf="@id/textPhrase"
+                app:layout_constraintStart_toStartOf="@id/textPhrase"
+                app:layout_constraintTop_toBottomOf="@id/authorPhrase"
+                tools:src="@drawable/default_image" />
 
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
 
@@ -112,6 +125,7 @@
         android:layout_centerVertical="true"
         android:layout_marginTop="32dp"
         android:background="@color/colorAccent"
+        app:layout_constraintBottom_toTopOf="@id/buttonNewPhrase"
         app:layout_constraintEnd_toEndOf="@id/scrollView"
         app:layout_constraintStart_toStartOf="@id/scrollView"
         app:layout_constraintTop_toBottomOf="@id/scrollView" />

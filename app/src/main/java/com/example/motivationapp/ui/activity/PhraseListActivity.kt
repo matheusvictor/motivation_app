@@ -3,14 +3,15 @@ package com.example.motivationapp.ui.activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.example.motivationapp.R
 import com.example.motivationapp.databinding.ActivityPhraseListBinding
 import com.example.motivationapp.repository.AppDatabase
 import com.example.motivationapp.ui.recyclerview.adapter.PhraseListAdapter
 
-class PhraseListActivity : AppCompatActivity() {
+class PhraseListActivity : AppCompatActivity(R.layout.activity_phrase_details) {
 
     private val bindingPhraseListActivity by lazy { ActivityPhraseListBinding.inflate(layoutInflater) }
-    private val adapter = PhraseListAdapter()
+    private val adapter = PhraseListAdapter(context = this)
 
     private val phrasesDAO by lazy {
         AppDatabase.getInstance(this).phrasesDao()
@@ -21,6 +22,7 @@ class PhraseListActivity : AppCompatActivity() {
         setContentView(bindingPhraseListActivity.root)
         setRecyclerView()
         setAddNewPhraseButton()
+        title = "My Phrases"
     }
 
     override fun onResume() {
@@ -31,6 +33,9 @@ class PhraseListActivity : AppCompatActivity() {
     private fun setRecyclerView() {
         val recyclerView = bindingPhraseListActivity.rvPhraseList
         recyclerView.adapter = adapter
+        adapter.whenClickOnItem = {
+            // TODO
+        }
     }
 
     private fun setAddNewPhraseButton() {
@@ -44,6 +49,4 @@ class PhraseListActivity : AppCompatActivity() {
         val intent = Intent(this, PhraseFormActivity::class.java)
         startActivity(intent)
     }
-
-
 }
