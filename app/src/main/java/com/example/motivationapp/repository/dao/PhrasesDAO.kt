@@ -18,7 +18,7 @@ interface PhrasesDAO {
     @Query("SELECT * FROM Phrase WHERE id = :id")
     fun findById(id: Long): Phrase?
 
-    @Query("SELECT * FROM Phrase WHERE phrase_category = :categoryId")
+    @Query("SELECT * FROM Phrase WHERE category = :categoryId")
     fun findByCategoryId(categoryId: Int): Phrase?
 
 }
