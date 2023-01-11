@@ -11,7 +11,7 @@ import kotlinx.android.parcel.Parcelize
 data class Phrase(
     @PrimaryKey(autoGenerate = true) val id: Long = 0L,
     @ColumnInfo(name = "url_image") val urlImage: String? = null,
-    @ColumnInfo(name = "phrase_text") val text: String,
-    @ColumnInfo(name = "phrase_author") val author: String? = null,
-    @ColumnInfo(name = "phrase_category") val category: Int,
+    @ColumnInfo(name = "text") val text: String,
+    @ColumnInfo(name = "author") val author: String? = null,
+    @ColumnInfo(name = "category") val category: Int,
 ) : Parcelable
