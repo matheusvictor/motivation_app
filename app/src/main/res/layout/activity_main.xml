@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/imageAll"
+            android:id="@+id/iv_all_categories"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_margin="8dp"
@@ -27,21 +27,21 @@
             app:tint="@color/white" />
 
         <ImageView
-            android:id="@+id/imageHappy"
+            android:id="@+id/iv_good_vibes_categories"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_margin="8dp"
             android:layout_weight="1"
-            android:src="@drawable/ic_happy_category"
+            android:src="@drawable/ic_good_vibes_category"
             app:tint="@color/white" />
 
         <ImageView
-            android:id="@+id/imageSun"
+            android:id="@+id/iv_bad_vibes_category"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_margin="8dp"
             android:layout_weight="1"
-            android:src="@drawable/ic_morning_category"
+            android:src="@drawable/ic_bad_vibes_category"
             app:tint="@color/white" />
 
     </LinearLayout>
