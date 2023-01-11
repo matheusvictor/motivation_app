@@ -13,7 +13,8 @@ import com.example.motivationapp.R
 import com.example.motivationapp.databinding.ActivityMainBinding
 import com.example.motivationapp.infra.MotivationAppConstants
 import com.example.motivationapp.infra.SecurityPreferences
-import com.example.motivationapp.repository.Mock
+import com.example.motivationapp.model.Phrase
+import com.example.motivationapp.repository.AppDatabase
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -22,6 +23,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private var mPhraseFiltered: Int = MotivationAppConstants.PHRASES_FILTER.ALL
 
     private val bindingActivityMain by lazy { ActivityMainBinding.inflate(layoutInflater) }
+
+    private val phrasesDAO by lazy {
+        AppDatabase.getInstance(this).phrasesDao()
+    }
+
+    private var phraseFounded: Phrase? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -115,8 +122,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun generateNewPhrase() {
-        var textPhrase = findViewById<TextView>(R.id.textPhrase)
-        textPhrase.text = Mock().getPhrase(mPhraseFiltered)
+        val textPhrase = findViewById<TextView>(R.id.textPhrase)
+        phraseFounded = phrasesDAO.findById(mPhraseFiltered.toLong())
+        textPhrase.text = phraseFounded?.text ?: "There aren't nothing here"
     }
 
 }
