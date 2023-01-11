@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.motivationapp.databinding.PhraseItemBinding
 import com.example.motivationapp.model.Phrase
 
-class PhraseListAdapter(phrases: List<Phrase>) :
+class PhraseListAdapter(phrases: List<Phrase> = emptyList()) :
     RecyclerView.Adapter<PhraseListAdapter.ViewHolder>() {
 
     private val dataSet = phrases.toMutableList() // copy of the list received by parameter
@@ -17,7 +17,7 @@ class PhraseListAdapter(phrases: List<Phrase>) :
         fun linkPhraseToView(phrase: Phrase) {
 
             val description = binding.tvDescription
-            description.text = phrase.description
+            description.text = phrase.text
 
             val author = binding.tvAuthor
             author.text = phrase.author
