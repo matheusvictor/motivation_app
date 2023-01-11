@@ -25,7 +25,7 @@
         <activity android:name=".ui.activity.PhraseListActivity" />
 
         <activity
-            android:name=".ui.activity.PhraseListAdapter"
+            android:name=".ui.recyclerview.adapter.PhraseListAdapter"
             tools:ignore="Instantiatable" />
 
         <activity android:name=".ui.activity.PhraseFormActivity" />
