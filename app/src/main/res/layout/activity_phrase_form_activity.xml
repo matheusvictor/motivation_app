@@ -69,31 +69,37 @@
             android:text="Phrase Category"
             android:textSize="16sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/radio_group_form"
             app:layout_constraintEnd_toEndOf="@id/layout_form_phrase_author"
             app:layout_constraintStart_toStartOf="@id/layout_form_phrase_author"
             app:layout_constraintTop_toBottomOf="@id/layout_form_phrase_author" />
 
         <RadioGroup
+            android:id="@+id/radio_group_form"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
+            android:checkedButton="@id/radio_button_all_category"
+            android:clickable="true"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="@id/tv_phrase_category"
             app:layout_constraintStart_toStartOf="@id/tv_phrase_category"
             app:layout_constraintTop_toBottomOf="@id/tv_phrase_category">
 
             <RadioButton
+                android:id="@+id/radio_button_all_category"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:text="All" />
 
             <RadioButton
+                android:id="@+id/radio_button_good_vibes_category"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:textIsSelectable="true"
                 android:text="Good vibes" />
 
             <RadioButton
+                android:id="@+id/radio_button_bad_vibes_category"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:text="Bad vibes" />
