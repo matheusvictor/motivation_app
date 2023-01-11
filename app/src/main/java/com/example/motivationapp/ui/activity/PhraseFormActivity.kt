@@ -1,6 +1,7 @@
 package com.example.motivationapp.ui.activity
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.motivationapp.R
@@ -49,13 +50,31 @@ class PhraseFormActivity : AppCompatActivity(R.layout.activity_phrase_form_activ
         val phraseAuthor = bindingPhraseFormActivity.formPhraseAuthor
         val author = phraseAuthor.text.toString()
 
-        return Phrase(
+        val radioGroup = bindingPhraseFormActivity.radioGroupForm
+        Log.i("RadioGroup", radioGroup.checkedRadioButtonId.toString())
+
+        var category = 0
+        when (radioGroup.checkedRadioButtonId) {
+            R.id.radio_button_all_category -> {
+                category = 1
+            }
+            R.id.radio_button_good_vibes_category -> {
+                category = 2
+            }
+            R.id.radio_button_bad_vibes_category -> {
+                category = 3
+            }
+        }
+
+        val newPhrase = Phrase(
             id = phraseId,
             urlImage = urlImage,
             text = phrase,
             author = author,
-            category = 1
+            category = category
         )
+        Log.i("PhraseCreated", newPhrase.toString())
+        return newPhrase
     }
 
 }
