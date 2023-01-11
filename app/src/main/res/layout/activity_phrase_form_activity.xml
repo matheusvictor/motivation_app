@@ -79,29 +79,27 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:checkedButton="@id/radio_button_all_category"
+            android:checkedButton="@id/radio_button_good_vibes_category"
             android:clickable="true"
+            android:focusable="true"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="@id/tv_phrase_category"
             app:layout_constraintStart_toStartOf="@id/tv_phrase_category"
             app:layout_constraintTop_toBottomOf="@id/tv_phrase_category">
 
-            <RadioButton
-                android:id="@+id/radio_button_all_category"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:text="All" />
 
             <RadioButton
                 android:id="@+id/radio_button_good_vibes_category"
-                android:layout_width="100dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="Good vibes" />
 
             <RadioButton
                 android:id="@+id/radio_button_bad_vibes_category"
-                android:layout_width="100dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="Bad vibes" />
 
         </RadioGroup>
