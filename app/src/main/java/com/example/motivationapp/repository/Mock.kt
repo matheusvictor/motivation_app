@@ -12,8 +12,8 @@ fun rand(start: Int, end: Int): Int {
 class Mock {
 
     private val ALL: Int = MotivationAppConstants.PHRASES_FILTER.ALL
-    private val HAPPY: Int = MotivationAppConstants.PHRASES_FILTER.HAPPY
-    private val MORNING: Int = MotivationAppConstants.PHRASES_FILTER.MORNING
+    private val HAPPY: Int = MotivationAppConstants.PHRASES_FILTER.GOOD_VIBES
+    private val MORNING: Int = MotivationAppConstants.PHRASES_FILTER.BAD_VIBES
 
     private val mListPhrases: MutableList<Phrase> = mutableListOf(
         Phrase("Não sabendo que era impossível, foi lá e fez.", HAPPY),

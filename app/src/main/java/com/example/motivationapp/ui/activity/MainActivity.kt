@@ -15,6 +15,7 @@ import com.example.motivationapp.infra.MotivationAppConstants
 import com.example.motivationapp.infra.SecurityPreferences
 import com.example.motivationapp.model.Phrase
 import com.example.motivationapp.repository.AppDatabase
+import kotlin.random.Random
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -37,20 +38,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         // Instance mSecurityPreferences
         mSecurityPreferences = SecurityPreferences(this)
 
-        val textUsername = bindingActivityMain.textUsername
-        val username = mSecurityPreferences.getStoredString(MotivationAppConstants.KEY.USER_NAME)
-        val tempUsername =
-            mSecurityPreferences.getStoredString(MotivationAppConstants.KEY.TEMP_USER_NAME)
-
-        if (username.isNotBlank()) {
-            textUsername.text = "Hello, ${username}"
-        } else {
-            textUsername.text = "Hello, ${tempUsername}"
-        }
-
-        val imageAll = findViewById<ImageView>(R.id.imageAll)
-        val imageHappy = findViewById<ImageView>(R.id.imageHappy)
-        val imageSun = findViewById<ImageView>(R.id.imageSun)
+        val imageAll = findViewById<ImageView>(R.id.iv_all_categories)
+        val imageHappy = findViewById<ImageView>(R.id.iv_good_vibes_categories)
+        val imageSun = findViewById<ImageView>(R.id.iv_bad_vibes_category)
         val buttonNewPhrase = findViewById<Button>(R.id.buttonNewPhrase)
 
         // Preset color too imagemAll
@@ -86,7 +76,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(view: View) {
         val id = view.id
-        val listWithFiltersID = listOf(R.id.imageAll, R.id.imageHappy, R.id.imageSun)
+        val listWithFiltersID = listOf(
+            R.id.iv_all_categories,
+            R.id.iv_good_vibes_categories,
+            R.id.iv_bad_vibes_category
+        )
 
         if (id == R.id.buttonNewPhrase) {
             generateNewPhrase()
@@ -97,33 +91,44 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun handleFilter(filter_value: Int) {
 
-        val imageAll = findViewById<ImageView>(R.id.imageAll)
-        val imageSun = findViewById<ImageView>(R.id.imageSun)
-        val imageHappy = findViewById<ImageView>(R.id.imageHappy)
+        val imageAll = findViewById<ImageView>(R.id.iv_all_categories)
+        val imageSun = findViewById<ImageView>(R.id.iv_bad_vibes_category)
+        val imageHappy = findViewById<ImageView>(R.id.iv_good_vibes_categories)
 
         imageAll.setColorFilter(resources.getColor(R.color.white))
         imageSun.setColorFilter(resources.getColor(R.color.white))
         imageHappy.setColorFilter(resources.getColor(R.color.white))
 
         when (filter_value) {
-            R.id.imageAll -> {
+            R.id.iv_all_categories -> {
                 imageAll.setColorFilter(resources.getColor(R.color.colorAccent))
                 mPhraseFiltered = MotivationAppConstants.PHRASES_FILTER.ALL
             }
-            R.id.imageSun -> {
+            R.id.iv_bad_vibes_category -> {
                 imageSun.setColorFilter(resources.getColor(R.color.colorAccent))
-                mPhraseFiltered = MotivationAppConstants.PHRASES_FILTER.MORNING
+                mPhraseFiltered = MotivationAppConstants.PHRASES_FILTER.BAD_VIBES
             }
-            R.id.imageHappy -> {
+            R.id.iv_good_vibes_categories -> {
                 imageHappy.setColorFilter(resources.getColor(R.color.colorAccent))
-                mPhraseFiltered = MotivationAppConstants.PHRASES_FILTER.HAPPY
+                mPhraseFiltered = MotivationAppConstants.PHRASES_FILTER.GOOD_VIBES
             }
         }
     }
 
     private fun generateNewPhrase() {
         val textPhrase = findViewById<TextView>(R.id.textPhrase)
-        phraseFounded = phrasesDAO.findById(mPhraseFiltered.toLong())
+        phraseFounded = when (mPhraseFiltered) {
+            1 -> {
+                val randCategory = Random.nextInt(
+                    from = MotivationAppConstants.PHRASES_FILTER.GOOD_VIBES,
+                    until = MotivationAppConstants.PHRASES_FILTER.BAD_VIBES + 1
+                )
+                phrasesDAO.findByCategoryId(randCategory)
+            }
+            else -> {
+                phrasesDAO.findByCategoryId(mPhraseFiltered)
+            }
+        }
         textPhrase.text = phraseFounded?.text ?: "There aren't nothing here"
     }
 
