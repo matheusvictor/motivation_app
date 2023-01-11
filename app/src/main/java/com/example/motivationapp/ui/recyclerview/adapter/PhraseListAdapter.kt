@@ -40,4 +40,10 @@ class PhraseListAdapter(phrases: List<Phrase> = emptyList()) :
 
     override fun getItemCount(): Int = this.dataSet.size
 
+    fun update(phrases: List<Phrase>) {
+        this.dataSet.clear()
+        this.dataSet.addAll(phrases)
+        notifyDataSetChanged()
+    }
+
 }
