@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".ui.activity.PhraseFormActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/form_image_phrase"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/default_image"
+            tools:srcCompat="@drawable/default_image" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layout_form_phrase_text"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            app:layout_constraintEnd_toEndOf="@id/form_image_phrase"
+            app:layout_constraintStart_toStartOf="@id/form_image_phrase"
+            app:layout_constraintTop_toBottomOf="@id/form_image_phrase">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/form_phrase_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Insert your phrase here"
+                android:inputType="text" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layout_form_phrase_author"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="@id/layout_form_phrase_text"
+            app:layout_constraintStart_toStartOf="@id/layout_form_phrase_text"
+            app:layout_constraintTop_toBottomOf="@id/layout_form_phrase_text">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/form_phrase_author"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Phrase's author"
+                android:inputType="text" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/tv_phrase_category"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Phrase Category"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/radio_group_form"
+            app:layout_constraintEnd_toEndOf="@id/layout_form_phrase_author"
+            app:layout_constraintStart_toStartOf="@id/layout_form_phrase_author"
+            app:layout_constraintTop_toBottomOf="@id/layout_form_phrase_author" />
+
+        <RadioGroup
+            android:id="@+id/radio_group_form"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:checkedButton="@id/radio_button_good_vibes_category"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="@id/tv_phrase_category"
+            app:layout_constraintStart_toStartOf="@id/tv_phrase_category"
+            app:layout_constraintTop_toBottomOf="@id/tv_phrase_category">
+
+
+            <RadioButton
+                android:id="@+id/radio_button_good_vibes_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Good vibes" />
+
+            <RadioButton
+                android:id="@+id/radio_button_bad_vibes_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Bad vibes" />
+
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/bt_form_save_phrase"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="Save"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layout_form_phrase_author"
+            app:layout_constraintVertical_bias="1" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</ScrollView>
