@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.motivationapp.R
 import com.example.motivationapp.databinding.ActivityPhraseFormActivityBinding
+import com.example.motivationapp.extensions.tryLoadImage
 import com.example.motivationapp.model.Phrase
 import com.example.motivationapp.repository.AppDatabase
 
@@ -27,6 +28,11 @@ class PhraseFormActivity : AppCompatActivity(R.layout.activity_phrase_form_activ
         setContentView(bindingPhraseFormActivity.root)
         title = "Add New Phrase" // define o título da Activity
         setSaveButton()
+
+        bindingPhraseFormActivity.formImagePhrase
+            .tryLoadImage(
+                "https://dropsdejogos.uai.com.br/wp-content/uploads/sites/10/2021/11/reproducao-gaules-instagram-scaled.jpg"
+            )
     }
 
     private fun setSaveButton() {
