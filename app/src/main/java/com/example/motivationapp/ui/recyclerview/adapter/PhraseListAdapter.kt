@@ -2,6 +2,7 @@ package com.example.motivationapp.ui.recyclerview.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.motivationapp.databinding.PhraseItemBinding
@@ -37,6 +38,23 @@ class PhraseListAdapter(
 
             val author = binding.tvAuthor
             author.text = phrase.author
+
+            val category = binding.tvCategory
+            when (phrase.category) {
+                2 -> {
+                    category.text = "Good Vibes"
+
+                }
+                3 -> {
+                    category.text = "Bad Vibes"
+                }
+            }
+
+            if (phrase.urlImage.isNullOrBlank()) {
+                binding.ivPhraseCategory.visibility = View.GONE
+            } else {
+                binding.ivPhraseCategory.visibility = View.VISIBLE
+            }
 
         }
     }
