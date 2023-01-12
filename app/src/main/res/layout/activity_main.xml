@@ -66,6 +66,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
+        app:layout_constraintBottom_toTopOf="@id/simpleView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textUsername">
@@ -83,6 +84,7 @@
                 android:textAlignment="center"
                 android:textSize="22sp"
                 android:textStyle="italic"
+                app:layout_constraintBottom_toTopOf="@id/authorPhrase"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -94,6 +96,7 @@
                 android:layout_height="wrap_content"
                 android:maxLines="1"
                 android:textSize="14sp"
+                app:layout_constraintBottom_toTopOf="@id/iv_phrase_photo"
                 app:layout_constraintEnd_toEndOf="@id/textPhrase"
                 app:layout_constraintStart_toStartOf="@id/textPhrase"
                 app:layout_constraintTop_toBottomOf="@id/textPhrase"

@@ -130,6 +130,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
         textPhrase.text = phraseFounded?.text ?: "There aren't nothing here"
+
+        val image = findViewById<ImageView>(R.id.iv_phrase_photo)
+        if (phraseFounded?.urlImage.isNullOrBlank()) {
+            image.visibility = View.GONE
+        }
     }
 
 }
