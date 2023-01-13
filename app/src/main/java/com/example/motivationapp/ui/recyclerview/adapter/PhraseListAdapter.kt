@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.motivationapp.databinding.PhraseItemBinding
+import com.example.motivationapp.extensions.tryLoadImage
 import com.example.motivationapp.model.Phrase
 
 class PhraseListAdapter(
@@ -15,7 +16,7 @@ class PhraseListAdapter(
 ) :
     RecyclerView.Adapter<PhraseListAdapter.ViewHolder>() {
 
-    private val dataSet = phrases.toMutableList() // copy of the list received by parameter
+    private val dataSet = phrases.toMutableList()
 
     inner class ViewHolder(private val binding: PhraseItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -54,8 +55,8 @@ class PhraseListAdapter(
                 binding.ivPhraseCategory.visibility = View.GONE
             } else {
                 binding.ivPhraseCategory.visibility = View.VISIBLE
+                binding.ivPhraseCategory.tryLoadImage(phrase.urlImage)
             }
-
         }
     }
 
