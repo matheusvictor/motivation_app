@@ -5,10 +5,12 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.motivationapp.R
+import com.example.motivationapp.constants.PHRASE_ID
 import com.example.motivationapp.databinding.ActivityPhraseFormActivityBinding
 import com.example.motivationapp.extensions.tryLoadImage
 import com.example.motivationapp.model.Phrase
 import com.example.motivationapp.repository.AppDatabase
+import com.example.motivationapp.ui.dialog.ImageFormDialog
 
 class PhraseFormActivity : AppCompatActivity(R.layout.activity_phrase_form_activity) {
 
@@ -26,13 +28,17 @@ class PhraseFormActivity : AppCompatActivity(R.layout.activity_phrase_form_activ
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(bindingPhraseFormActivity.root)
-        title = "Add New Phrase" // define o título da Activity
+        title = "Add New Phrase"
         setSaveButton()
 
-        bindingPhraseFormActivity.formImagePhrase
-            .tryLoadImage(
-                "https://dropsdejogos.uai.com.br/wp-content/uploads/sites/10/2021/11/reproducao-gaules-instagram-scaled.jpg"
-            )
+        bindingPhraseFormActivity.formImagePhrase.setOnClickListener {
+            ImageFormDialog(this)
+                .show(urlImage) {
+                    urlImage = it
+                    bindingPhraseFormActivity.formImagePhrase.tryLoadImage(urlImage)
+                }
+        }
+        phraseId = intent.getLongExtra(PHRASE_ID, 0L)
     }
 
     private fun setSaveButton() {
