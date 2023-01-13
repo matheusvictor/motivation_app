@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.motivationapp.R
+import com.example.motivationapp.constants.PHRASE_ID
 import com.example.motivationapp.databinding.ActivityPhraseListBinding
 import com.example.motivationapp.repository.AppDatabase
 import com.example.motivationapp.ui.recyclerview.adapter.PhraseListAdapter
@@ -34,7 +35,12 @@ class PhraseListActivity : AppCompatActivity(R.layout.activity_phrase_details) {
         val recyclerView = bindingPhraseListActivity.rvPhraseList
         recyclerView.adapter = adapter
         adapter.whenClickOnItem = {
-            // TODO
+            val intent = Intent(
+                this, PhraseDetailsActivity::class.java
+            ).apply {
+                putExtra(PHRASE_ID, it.id)
+            }
+            startActivity(intent)
         }
     }
 
