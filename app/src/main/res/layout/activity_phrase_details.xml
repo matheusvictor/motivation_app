@@ -23,7 +23,7 @@
             tools:src="@tools:sample/backgrounds/scenic" />
 
         <TextView
-            android:id="@+id/phrase_details_title"
+            android:id="@+id/phrase_details_author"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
@@ -37,7 +37,7 @@
             tools:text="@tools:sample/lorem[10]" />
 
         <TextView
-            android:id="@+id/product_description_details"
+            android:id="@+id/phrase_text_details"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
@@ -46,7 +46,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/phrase_details_title"
+            app:layout_constraintTop_toBottomOf="@+id/phrase_details_author"
             app:layout_constraintVertical_bias="0.0"
             tools:text="@tools:sample/lorem/random" />
 
