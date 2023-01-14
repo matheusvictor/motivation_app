@@ -10,7 +10,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.motivationapp.R
-import com.example.motivationapp.databinding.ActivityMainBinding
 import com.example.motivationapp.infra.MotivationAppConstants
 import com.example.motivationapp.infra.SecurityPreferences
 import com.example.motivationapp.model.Phrase
@@ -22,8 +21,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     // Initialize mSecurityPreferences
     private lateinit var mSecurityPreferences: SecurityPreferences
     private var mPhraseFiltered: Int = MotivationAppConstants.PHRASES_FILTER.ALL
-
-    private val bindingActivityMain by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
     private val phrasesDAO by lazy {
         AppDatabase.getInstance(this).phrasesDao()
@@ -117,19 +114,25 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun generateNewPhrase() {
         val textPhrase = findViewById<TextView>(R.id.textPhrase)
-        phraseFounded = when (mPhraseFiltered) {
-            1 -> {
-                val randCategory = Random.nextInt(
-                    from = MotivationAppConstants.PHRASES_FILTER.GOOD_VIBES,
-                    until = MotivationAppConstants.PHRASES_FILTER.BAD_VIBES + 1
-                )
-                phrasesDAO.findByCategoryId(randCategory)
+        val phrases = phrasesDAO.findAll()
+
+        if (phrases.isEmpty() || phraseFounded?.text.isNullOrBlank()) {
+            textPhrase.text = "There aren't nothing here"
+        } else {
+            phraseFounded = when (mPhraseFiltered) {
+                1 -> {
+                    val randCategory = Random.nextInt(
+                        from = MotivationAppConstants.PHRASES_FILTER.GOOD_VIBES,
+                        until = MotivationAppConstants.PHRASES_FILTER.BAD_VIBES
+                    )
+                    phrasesDAO.findByCategoryId(randCategory)
+                }
+                else -> {
+                    phrasesDAO.findByCategoryId(mPhraseFiltered)
+                }
             }
-            else -> {
-                phrasesDAO.findByCategoryId(mPhraseFiltered)
-            }
+            textPhrase.text = phraseFounded?.text ?: "There aren't nothing here"
         }
-        textPhrase.text = phraseFounded?.text ?: "There aren't nothing here"
 
         val image = findViewById<ImageView>(R.id.iv_phrase_photo)
         if (phraseFounded?.urlImage.isNullOrBlank()) {

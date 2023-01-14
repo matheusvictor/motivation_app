@@ -133,18 +133,23 @@
         app:layout_constraintStart_toStartOf="@id/scrollView"
         app:layout_constraintTop_toBottomOf="@id/scrollView" />
 
-    <Button
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/buttonNewPhrase"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:background="@drawable/ripple_button"
-        android:text="@string/new_phrase"
+        android:clickable="true"
+        android:focusable="true"
+
+        android:text="See New Phrase"
+        android:textAlignment="center"
         android:textColor="@color/white"
+        app:backgroundTint="@color/colorPrimary"
+        app:iconTint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/simpleView"
         app:layout_constraintVertical_bias="1" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
