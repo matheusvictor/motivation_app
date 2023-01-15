@@ -8,7 +8,7 @@
     tools:context=".ui.activity.MainActivity">
 
     <LinearLayout
-        android:id="@+id/linearMenu"
+        android:id="@+id/menu_linear"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/iv_all_categories"
+            android:id="@+id/all_categories_filter"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_margin="8dp"
@@ -27,7 +27,7 @@
             app:tint="@color/white" />
 
         <ImageView
-            android:id="@+id/iv_good_vibes_categories"
+            android:id="@+id/good_vibes_category_filter"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_margin="8dp"
@@ -36,7 +36,7 @@
             app:tint="@color/white" />
 
         <ImageView
-            android:id="@+id/iv_bad_vibes_category"
+            android:id="@+id/bad_vibes_category_filter"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_margin="8dp"
@@ -47,94 +47,96 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/textUsername"
+        android:id="@+id/username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/linearMenu"
+        android:layout_below="@+id/menu_linear"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="64dp"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/scrollView"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@id/phrase_scrollview"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/linearMenu"
+        app:layout_constraintTop_toBottomOf="@id/menu_linear"
         tools:text="@tools:sample/lorem" />
 
     <ScrollView
-        android:id="@+id/scrollView"
+        android:id="@+id/phrase_scrollview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        app:layout_constraintBottom_toTopOf="@id/simpleView"
+        android:layout_margin="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textUsername">
+        app:layout_constraintTop_toBottomOf="@id/username">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/textPhrase"
+                android:id="@+id/phrase_message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="16dp"
                 android:maxLines="8"
-                android:padding="13dp"
+                android:padding="6dp"
                 android:textAlignment="center"
-                android:textSize="22sp"
+                android:textSize="16sp"
                 android:textStyle="italic"
-                app:layout_constraintBottom_toTopOf="@id/authorPhrase"
+                app:layout_constraintBottom_toTopOf="@id/phrase_author"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="@tools:sample/lorem/random" />
 
             <TextView
-                android:id="@+id/authorPhrase"
+                android:id="@+id/phrase_author"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
-                android:textSize="14sp"
-                app:layout_constraintBottom_toTopOf="@id/iv_phrase_photo"
-                app:layout_constraintEnd_toEndOf="@id/textPhrase"
-                app:layout_constraintStart_toStartOf="@id/textPhrase"
-                app:layout_constraintTop_toBottomOf="@id/textPhrase"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@id/phrase_image"
+                app:layout_constraintEnd_toEndOf="@id/phrase_message"
+                app:layout_constraintStart_toStartOf="@id/phrase_message"
+                app:layout_constraintTop_toBottomOf="@id/phrase_message"
                 tools:text="@tools:sample/lorem" />
 
             <ImageView
-                android:id="@+id/iv_phrase_photo"
-                android:layout_width="match_parent"
+                android:id="@+id/phrase_image"
+                android:layout_width="0dp"
                 android:layout_height="150dp"
+                android:layout_marginStart="6dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginEnd="6dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/default_image"
-                app:layout_constraintEnd_toEndOf="@id/textPhrase"
-                app:layout_constraintStart_toStartOf="@id/textPhrase"
-                app:layout_constraintTop_toBottomOf="@id/authorPhrase"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/phrase_author"
                 tools:src="@drawable/default_image" />
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
 
     <View
-        android:id="@+id/simpleView"
-        android:layout_width="128dp"
+        android:id="@+id/simple_divider"
+        android:layout_width="200dp"
         android:layout_height="3dp"
-        android:layout_below="@+id/scrollView"
+        android:layout_below="@+id/phrase_scrollview"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_marginTop="32dp"
-        android:background="@color/colorAccent"
-        app:layout_constraintBottom_toTopOf="@id/buttonNewPhrase"
-        app:layout_constraintEnd_toEndOf="@id/scrollView"
-        app:layout_constraintStart_toStartOf="@id/scrollView"
-        app:layout_constraintTop_toBottomOf="@id/scrollView" />
+        android:layout_marginBottom="32dp"
+        android:background="@color/colorPrimary"
+        app:layout_constraintBottom_toTopOf="@id/button_see_new_phrase"
+        app:layout_constraintEnd_toEndOf="@id/phrase_scrollview"
+        app:layout_constraintStart_toStartOf="@id/phrase_scrollview" />
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/buttonNewPhrase"
+        android:id="@+id/button_see_new_phrase"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
@@ -147,9 +149,8 @@
         app:backgroundTint="@color/colorPrimary"
         app:iconTint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/simpleView"
+        app:layout_constraintEnd_toEndOf="@id/phrase_scrollview"
+        app:layout_constraintStart_toStartOf="@id/phrase_scrollview"
         app:layout_constraintVertical_bias="1" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
