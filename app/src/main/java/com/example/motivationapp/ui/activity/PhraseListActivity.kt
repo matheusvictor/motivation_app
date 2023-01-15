@@ -1,11 +1,15 @@
 package com.example.motivationapp.ui.activity
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.motivationapp.R
 import com.example.motivationapp.constants.PHRASE_ID
 import com.example.motivationapp.databinding.ActivityPhraseListBinding
+import com.example.motivationapp.databinding.RemoveItemDialogBinding
 import com.example.motivationapp.repository.AppDatabase
 import com.example.motivationapp.ui.recyclerview.adapter.PhraseListAdapter
 
@@ -41,6 +45,21 @@ class PhraseListActivity : AppCompatActivity(R.layout.activity_phrase_details) {
                 putExtra(PHRASE_ID, it.id)
             }
             startActivity(intent)
+        }
+
+        adapter.whenLongClickOnItem = {
+            RemoveItemDialogBinding.inflate(LayoutInflater.from(this)).apply {
+                AlertDialog.Builder(bindingPhraseListActivity.root.context)
+                    .setView(root)
+                    .setNegativeButton("Cancel") { _, _ -> }
+                    .setPositiveButton("Confirm") { _, _ ->
+                        phrasesDAO.delete(it)
+                        adapter.update(phrasesDAO.findAll())
+                        Toast.makeText(applicationContext, "Phrase was remove!", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                    .show()
+            }
         }
     }
 
