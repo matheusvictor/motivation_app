@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.motivationapp.databinding.PhraseItemBinding
 import com.example.motivationapp.extensions.tryLoadImage
@@ -12,7 +13,8 @@ import com.example.motivationapp.model.Phrase
 class PhraseListAdapter(
     private val context: Context,
     phrases: List<Phrase> = emptyList(),
-    var whenClickOnItem: (phrase: Phrase) -> Unit = {}
+    var whenClickOnItem: (phrase: Phrase) -> Unit = {},
+    var whenLongClickOnItem: (phrase: Phrase) -> Unit = {}
 ) :
     RecyclerView.Adapter<PhraseListAdapter.ViewHolder>() {
 
@@ -28,6 +30,10 @@ class PhraseListAdapter(
                 if (::phrase.isInitialized) {
                     whenClickOnItem(phrase)
                 }
+            }
+            itemView.setOnLongClickListener {
+                whenLongClickOnItem.invoke(dataSet[adapterPosition])
+                return@setOnLongClickListener true
             }
         }
 

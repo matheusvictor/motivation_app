@@ -10,7 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.motivationapp.R
-import com.example.motivationapp.databinding.ActivityMainBinding
+import com.example.motivationapp.extensions.tryLoadImage
 import com.example.motivationapp.infra.MotivationAppConstants
 import com.example.motivationapp.infra.SecurityPreferences
 import com.example.motivationapp.model.Phrase
@@ -22,8 +22,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     // Initialize mSecurityPreferences
     private lateinit var mSecurityPreferences: SecurityPreferences
     private var mPhraseFiltered: Int = MotivationAppConstants.PHRASES_FILTER.ALL
-
-    private val bindingActivityMain by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
     private val phrasesDAO by lazy {
         AppDatabase.getInstance(this).phrasesDao()
@@ -38,10 +36,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         // Instance mSecurityPreferences
         mSecurityPreferences = SecurityPreferences(this)
 
-        val imageAll = findViewById<ImageView>(R.id.iv_all_categories)
-        val imageHappy = findViewById<ImageView>(R.id.iv_good_vibes_categories)
-        val imageSun = findViewById<ImageView>(R.id.iv_bad_vibes_category)
-        val buttonNewPhrase = findViewById<Button>(R.id.buttonNewPhrase)
+        val imageAll = findViewById<ImageView>(R.id.all_categories_filter)
+        val imageHappy = findViewById<ImageView>(R.id.good_vibes_category_filter)
+        val imageSun = findViewById<ImageView>(R.id.bad_vibes_category_filter)
+        val buttonNewPhrase = findViewById<Button>(R.id.button_see_new_phrase)
 
         // Preset color too imagemAll
         imageAll.setColorFilter(resources.getColor(R.color.colorAccent))
@@ -51,6 +49,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         imageSun.setOnClickListener(this)
         buttonNewPhrase.setOnClickListener(this)
 
+    }
+
+    override fun onResume() {
+        super.onResume()
         generateNewPhrase()
     }
 
@@ -77,12 +79,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(view: View) {
         val id = view.id
         val listWithFiltersID = listOf(
-            R.id.iv_all_categories,
-            R.id.iv_good_vibes_categories,
-            R.id.iv_bad_vibes_category
+            R.id.all_categories_filter,
+            R.id.good_vibes_category_filter,
+            R.id.bad_vibes_category_filter
         )
 
-        if (id == R.id.buttonNewPhrase) {
+        if (id == R.id.button_see_new_phrase) {
             generateNewPhrase()
         } else if (id in listWithFiltersID) {
             handleFilter(id)
@@ -91,24 +93,24 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun handleFilter(filter_value: Int) {
 
-        val imageAll = findViewById<ImageView>(R.id.iv_all_categories)
-        val imageSun = findViewById<ImageView>(R.id.iv_bad_vibes_category)
-        val imageHappy = findViewById<ImageView>(R.id.iv_good_vibes_categories)
+        val imageAll = findViewById<ImageView>(R.id.all_categories_filter)
+        val imageSun = findViewById<ImageView>(R.id.bad_vibes_category_filter)
+        val imageHappy = findViewById<ImageView>(R.id.good_vibes_category_filter)
 
         imageAll.setColorFilter(resources.getColor(R.color.white))
         imageSun.setColorFilter(resources.getColor(R.color.white))
         imageHappy.setColorFilter(resources.getColor(R.color.white))
 
         when (filter_value) {
-            R.id.iv_all_categories -> {
+            R.id.all_categories_filter -> {
                 imageAll.setColorFilter(resources.getColor(R.color.colorAccent))
                 mPhraseFiltered = MotivationAppConstants.PHRASES_FILTER.ALL
             }
-            R.id.iv_bad_vibes_category -> {
+            R.id.bad_vibes_category_filter -> {
                 imageSun.setColorFilter(resources.getColor(R.color.colorAccent))
                 mPhraseFiltered = MotivationAppConstants.PHRASES_FILTER.BAD_VIBES
             }
-            R.id.iv_good_vibes_categories -> {
+            R.id.good_vibes_category_filter -> {
                 imageHappy.setColorFilter(resources.getColor(R.color.colorAccent))
                 mPhraseFiltered = MotivationAppConstants.PHRASES_FILTER.GOOD_VIBES
             }
@@ -116,7 +118,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun generateNewPhrase() {
-        val textPhrase = findViewById<TextView>(R.id.textPhrase)
+
         phraseFounded = when (mPhraseFiltered) {
             1 -> {
                 val randCategory = Random.nextInt(
@@ -129,11 +131,23 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 phrasesDAO.findByCategoryId(mPhraseFiltered)
             }
         }
-        textPhrase.text = phraseFounded?.text ?: "There aren't nothing here"
 
-        val image = findViewById<ImageView>(R.id.iv_phrase_photo)
-        if (phraseFounded?.urlImage.isNullOrBlank()) {
+        fillPhraseFields(phraseFounded)
+    }
+
+    private fun fillPhraseFields(phrase: Phrase?) {
+        val message = findViewById<TextView>(R.id.phrase_message)
+        val author = findViewById<TextView>(R.id.phrase_author)
+        val image = findViewById<ImageView>(R.id.phrase_image)
+
+        message.text = phrase?.text ?: "There's nothing here"
+        author.text = phrase?.author ?: "Unknown"
+        image.tryLoadImage(phrase?.urlImage)
+
+        if (phrase?.urlImage.isNullOrBlank()) {
             image.visibility = View.GONE
+        } else {
+            image.visibility = View.VISIBLE
         }
     }
 
