@@ -5,11 +5,9 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.motivationapp.R
+import com.example.motivationapp.databinding.ActivityMainBinding
 import com.example.motivationapp.extensions.tryLoadImage
 import com.example.motivationapp.infra.MotivationAppConstants
 import com.example.motivationapp.infra.SecurityPreferences
@@ -17,11 +15,15 @@ import com.example.motivationapp.model.Phrase
 import com.example.motivationapp.repository.AppDatabase
 import kotlin.random.Random
 
-class MainActivity : AppCompatActivity(), View.OnClickListener {
+class MainActivity : AppCompatActivity(R.layout.activity_main), View.OnClickListener {
 
     // Initialize mSecurityPreferences
     private lateinit var mSecurityPreferences: SecurityPreferences
     private var mPhraseFiltered: Int = MotivationAppConstants.PHRASES_FILTER.ALL
+
+    private val bindingMainActivity by lazy {
+        ActivityMainBinding.inflate(layoutInflater)
+    }
 
     private val phrasesDAO by lazy {
         AppDatabase.getInstance(this).phrasesDao()
@@ -31,24 +33,18 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(bindingMainActivity.root)
 
         // Instance mSecurityPreferences
         mSecurityPreferences = SecurityPreferences(this)
 
-        val imageAll = findViewById<ImageView>(R.id.all_categories_filter)
-        val imageHappy = findViewById<ImageView>(R.id.good_vibes_category_filter)
-        val imageSun = findViewById<ImageView>(R.id.bad_vibes_category_filter)
-        val buttonNewPhrase = findViewById<Button>(R.id.button_see_new_phrase)
+        bindingMainActivity.allCategoriesFilter.setColorFilter(R.color.colorAccent)
+        bindingMainActivity.allCategoriesFilter.setColorFilter(resources.getColor(R.color.colorAccent))
 
-        // Preset color too imagemAll
-        imageAll.setColorFilter(resources.getColor(R.color.colorAccent))
-
-        imageAll.setOnClickListener(this)
-        imageHappy.setOnClickListener(this)
-        imageSun.setOnClickListener(this)
-        buttonNewPhrase.setOnClickListener(this)
-
+        bindingMainActivity.allCategoriesFilter.setOnClickListener(this)
+        bindingMainActivity.goodVibesCategoryFilter.setOnClickListener(this)
+        bindingMainActivity.badVibesCategoryFilter.setOnClickListener(this)
+        bindingMainActivity.buttonSeeNewPhrase.setOnClickListener(this)
     }
 
     override fun onResume() {
@@ -77,41 +73,36 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onClick(view: View) {
-        val id = view.id
         val listWithFiltersID = listOf(
             R.id.all_categories_filter,
             R.id.good_vibes_category_filter,
             R.id.bad_vibes_category_filter
         )
 
-        if (id == R.id.button_see_new_phrase) {
+        if (view.id == R.id.button_see_new_phrase) {
             generateNewPhrase()
-        } else if (id in listWithFiltersID) {
-            handleFilter(id)
+        } else if (view.id in listWithFiltersID) {
+            handleFilter(view.id)
         }
     }
 
     private fun handleFilter(filter_value: Int) {
 
-        val imageAll = findViewById<ImageView>(R.id.all_categories_filter)
-        val imageSun = findViewById<ImageView>(R.id.bad_vibes_category_filter)
-        val imageHappy = findViewById<ImageView>(R.id.good_vibes_category_filter)
-
-        imageAll.setColorFilter(resources.getColor(R.color.white))
-        imageSun.setColorFilter(resources.getColor(R.color.white))
-        imageHappy.setColorFilter(resources.getColor(R.color.white))
+        bindingMainActivity.allCategoriesFilter.setColorFilter(resources.getColor(R.color.white))
+        bindingMainActivity.badVibesCategoryFilter.setColorFilter(resources.getColor(R.color.white))
+        bindingMainActivity.goodVibesCategoryFilter.setColorFilter(resources.getColor(R.color.white))
 
         when (filter_value) {
             R.id.all_categories_filter -> {
-                imageAll.setColorFilter(resources.getColor(R.color.colorAccent))
+                bindingMainActivity.allCategoriesFilter.setColorFilter(resources.getColor(R.color.colorAccent))
                 mPhraseFiltered = MotivationAppConstants.PHRASES_FILTER.ALL
             }
             R.id.bad_vibes_category_filter -> {
-                imageSun.setColorFilter(resources.getColor(R.color.colorAccent))
+                bindingMainActivity.badVibesCategoryFilter.setColorFilter(resources.getColor(R.color.colorAccent))
                 mPhraseFiltered = MotivationAppConstants.PHRASES_FILTER.BAD_VIBES
             }
             R.id.good_vibes_category_filter -> {
-                imageHappy.setColorFilter(resources.getColor(R.color.colorAccent))
+                bindingMainActivity.goodVibesCategoryFilter.setColorFilter(resources.getColor(R.color.colorAccent))
                 mPhraseFiltered = MotivationAppConstants.PHRASES_FILTER.GOOD_VIBES
             }
         }
@@ -136,19 +127,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun fillPhraseFields(phrase: Phrase?) {
-        val message = findViewById<TextView>(R.id.phrase_message)
-        val author = findViewById<TextView>(R.id.phrase_author)
-        val image = findViewById<ImageView>(R.id.phrase_image)
-
-        message.text = phrase?.text ?: "There's nothing here"
-        author.text = phrase?.author ?: "Unknown"
-        image.tryLoadImage(phrase?.urlImage)
+        bindingMainActivity.phraseMessage.text = phrase?.text ?: "There's nothing here"
+        bindingMainActivity.phraseAuthor.text = phrase?.author ?: "Unknown"
+        bindingMainActivity.phraseImage.tryLoadImage(phrase?.urlImage)
 
         if (phrase?.urlImage.isNullOrBlank()) {
-            image.visibility = View.GONE
+            bindingMainActivity.phraseImage.visibility = View.GONE
         } else {
-            image.visibility = View.VISIBLE
+            bindingMainActivity.phraseImage.visibility = View.VISIBLE
         }
     }
-
 }
