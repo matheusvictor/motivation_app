@@ -14,9 +14,13 @@ class PhraseListAdapter(
     private val context: Context,
     phrases: List<Phrase> = emptyList(),
     var whenClickOnItem: (phrase: Phrase) -> Unit = {},
-    var whenLongClickOnItem: (phrase: Phrase) -> Unit = {}
+    private val whenLongClickOnItem: LongClickedItem
 ) :
     RecyclerView.Adapter<PhraseListAdapter.ViewHolder>() {
+
+    interface LongClickedItem {
+        fun whenLongClickOnItem(phrase: Phrase)
+    }
 
     private val dataSet = phrases.toMutableList()
 
@@ -32,7 +36,7 @@ class PhraseListAdapter(
                 }
             }
             itemView.setOnLongClickListener {
-                whenLongClickOnItem.invoke(dataSet[adapterPosition])
+                whenLongClickOnItem.whenLongClickOnItem(phrase)
                 return@setOnLongClickListener true
             }
         }
