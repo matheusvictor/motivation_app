@@ -52,11 +52,11 @@ class PhraseListAdapter(
 
             val category = binding.tvCategory
             when (phrase.category) {
-                2 -> {
+                1 -> {
                     category.text = "Good Vibes"
 
                 }
-                3 -> {
+                2 -> {
                     category.text = "Bad Vibes"
                 }
             }

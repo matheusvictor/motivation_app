@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.motivationapp.R
 import com.example.motivationapp.constants.PHRASE_ID
 import com.example.motivationapp.databinding.ActivityPhraseFormActivityBinding
 import com.example.motivationapp.extensions.tryLoadImage
@@ -12,7 +11,7 @@ import com.example.motivationapp.model.Phrase
 import com.example.motivationapp.repository.AppDatabase
 import com.example.motivationapp.ui.dialog.ImageFormDialog
 
-class PhraseFormActivity : AppCompatActivity(R.layout.activity_phrase_form_activity) {
+class PhraseFormActivity : AppCompatActivity() {
 
     private val bindingPhraseFormActivity by lazy {
         ActivityPhraseFormActivityBinding.inflate(layoutInflater)
@@ -47,7 +46,7 @@ class PhraseFormActivity : AppCompatActivity(R.layout.activity_phrase_form_activ
         saveButton.setOnClickListener {
             val newPhrase = createNewPhrase()
             phrasesDao.save(newPhrase)
-            Toast.makeText(this, "Created with success", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Created with success", Toast.LENGTH_SHORT).show()
             finish()
         }
     }
@@ -57,22 +56,16 @@ class PhraseFormActivity : AppCompatActivity(R.layout.activity_phrase_form_activ
         val phraseTextView = bindingPhraseFormActivity.formPhraseText
         val phrase = phraseTextView.text.toString()
 
+//        if (phrase.isBlank()) {
+//            setErrorTextField(true)
+//        }
+
         val phraseAuthor = bindingPhraseFormActivity.formPhraseAuthor
         val author = phraseAuthor.text.toString()
 
-        val radioGroup = bindingPhraseFormActivity.radioGroupForm
-        Log.i("RadioGroup", radioGroup.checkedRadioButtonId.toString())
-
-        val category: Int = when (radioGroup.checkedRadioButtonId) {
-            R.id.radio_button_good_vibes_category -> {
-                2
-            }
-            R.id.radio_button_bad_vibes_category -> {
-                3
-            }
-            else -> {
-                1
-            }
+        var category = 1
+        if (bindingPhraseFormActivity.radioButtonBadVibesCategory.isChecked) {
+            category = 2
         }
 
         val newPhrase = Phrase(
@@ -82,8 +75,14 @@ class PhraseFormActivity : AppCompatActivity(R.layout.activity_phrase_form_activ
             author = author,
             category = category
         )
-        Log.i("PhraseCreated", newPhrase.toString())
+        Log.i("PhraseFormActivity", newPhrase.toString())
         return newPhrase
     }
+
+//    private fun setErrorTextField(error: Boolean) {
+//        if (error) {
+//            bindingPhraseFormActivity.formPhraseText.error = "AA"
+//        }
+//    }
 
 }
