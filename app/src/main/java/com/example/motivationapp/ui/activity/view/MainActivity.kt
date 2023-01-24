@@ -1,4 +1,4 @@
-package com.example.motivationapp.ui.activity
+package com.example.motivationapp.ui.activity.view
 
 import android.content.Intent
 import android.os.Bundle
@@ -13,6 +13,9 @@ import com.example.motivationapp.databinding.ActivityMainBinding
 import com.example.motivationapp.extensions.tryLoadImage
 import com.example.motivationapp.infra.MotivationAppConstants.KEY.USER_NAME
 import com.example.motivationapp.infra.SecurityPreferences
+import com.example.motivationapp.ui.activity.PhraseFormActivity
+import com.example.motivationapp.ui.activity.PhraseListActivity
+import com.example.motivationapp.ui.activity.viewmodel.MainViewModel
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -42,7 +45,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onResume() {
         super.onResume()
         showNewPhrase()
-        Log.d("MainActivity", viewModel.phraseFounded.toString())
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -72,14 +74,18 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             R.id.bad_vibes_category_filter
         )
 
-        if (view.id == R.id.button_see_new_phrase) {
-            showNewPhrase()
-        } else if (view.id in categoryFilters) {
-            handleFilter(view.id)
+        if (view.id in categoryFilters) {
+            applyCategoryFilter(view.id)
+        } else if (view.id == R.id.button_see_new_phrase) {
+            if (viewModel.isRandom) {
+                viewModel.filterByRandomCategory()
+                showNewPhrase()
+            }
         }
+        Log.d("MainActivity", "categoryFilter: ${viewModel.categoryFilter}")
     }
 
-    private fun handleFilter(filter_value: Int) {
+    private fun applyCategoryFilter(filter_value: Int) {
 
         bindingMainActivity.allCategoriesFilter.setColorFilter(resources.getColor(R.color.white))
         bindingMainActivity.badVibesCategoryFilter.setColorFilter(resources.getColor(R.color.white))
@@ -89,24 +95,23 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             R.id.all_categories_filter -> {
                 bindingMainActivity.allCategoriesFilter.setColorFilter(resources.getColor(R.color.colorAccent))
                 viewModel.filterByRandomCategory()
-                Log.d("MainActivity", viewModel.categoryFilter.toString())
             }
             R.id.bad_vibes_category_filter -> {
                 bindingMainActivity.badVibesCategoryFilter.setColorFilter(resources.getColor(R.color.colorAccent))
                 viewModel.filterByBadVibesCategory()
-                Log.d("MainActivity", viewModel.categoryFilter.toString())
             }
             R.id.good_vibes_category_filter -> {
                 bindingMainActivity.goodVibesCategoryFilter.setColorFilter(resources.getColor(R.color.colorAccent))
                 viewModel.filterByGoodVibesCategory()
-                Log.d("MainActivity", viewModel.categoryFilter.toString())
             }
         }
+
+        Log.d("MainActivity", "apply filter: ${viewModel.categoryFilter}")
+        showNewPhrase()
     }
 
     private fun showNewPhrase() {
-        viewModel.getNextPhrase(viewModel.categoryFilter)
-        Log.d("MainActivity", viewModel.categoryFilter.toString())
+        viewModel.getNextPhrase()
         updatePhraseDetails()
     }
 

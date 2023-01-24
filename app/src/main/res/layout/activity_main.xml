@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activity.MainActivity">
+    tools:context=".ui.activity.view.MainActivity">
 
     <LinearLayout
         android:id="@+id/menu_linear"
@@ -135,7 +135,7 @@
         app:layout_constraintEnd_toEndOf="@id/phrase_scrollview"
         app:layout_constraintStart_toStartOf="@id/phrase_scrollview" />
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+    <Button
         android:id="@+id/button_see_new_phrase"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -151,6 +151,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/phrase_scrollview"
         app:layout_constraintStart_toStartOf="@id/phrase_scrollview"
-        app:layout_constraintVertical_bias="1" />
+        app:layout_constraintVertical_bias="1"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

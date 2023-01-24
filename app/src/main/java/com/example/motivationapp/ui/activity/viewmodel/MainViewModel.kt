@@ -1,7 +1,6 @@
-package com.example.motivationapp.ui.activity
+package com.example.motivationapp.ui.activity.viewmodel
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import com.example.motivationapp.infra.MotivationAppConstants
 import com.example.motivationapp.model.Phrase
@@ -14,14 +13,18 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         AppDatabase.getInstance(application.applicationContext).phrasesDao()
     }
 
-    private var _categoryFilter: Int = randomCategory()
+    private var _categoryFilter: Int
     val categoryFilter: Int get() = _categoryFilter
+
+    private var _isRandom: Boolean = true
+    val isRandom: Boolean get() = _isRandom
 
     private var _phraseFounded: Phrase? = null
     val phraseFounded: Phrase? get() = _phraseFounded
 
     init {
-        getNextPhrase(categoryFilter)
+        _categoryFilter = randomCategory()
+        getNextPhrase()
     }
 
     private fun randomCategory(): Int {
@@ -32,21 +35,21 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun filterByGoodVibesCategory() {
+        _isRandom = false
         _categoryFilter = MotivationAppConstants.PHRASES_FILTER.GOOD_VIBES
     }
 
     fun filterByBadVibesCategory() {
+        _isRandom = false
         _categoryFilter = MotivationAppConstants.PHRASES_FILTER.BAD_VIBES
     }
 
     fun filterByRandomCategory() {
+        _isRandom = true
         _categoryFilter = randomCategory()
-        Log.d("MainViewModel", "_category $_categoryFilter")
-        Log.d("MainViewModel", categoryFilter.toString())
     }
 
-    fun getNextPhrase(filter: Int) {
-        _phraseFounded = _phrasesDAO.findByCategoryId(filter)
+    fun getNextPhrase() {
+        _phraseFounded = _phrasesDAO.findByCategoryId(_categoryFilter)
     }
-
 }
