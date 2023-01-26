@@ -13,8 +13,6 @@ import com.example.motivationapp.databinding.ActivityMainBinding
 import com.example.motivationapp.extensions.tryLoadImage
 import com.example.motivationapp.infra.MotivationAppConstants.KEY.USER_NAME
 import com.example.motivationapp.infra.SecurityPreferences
-import com.example.motivationapp.ui.activity.PhraseFormActivity
-import com.example.motivationapp.ui.activity.PhraseListActivity
 import com.example.motivationapp.ui.activity.viewmodel.MainViewModel
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
@@ -79,8 +77,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         } else if (view.id == R.id.button_see_new_phrase) {
             if (viewModel.isRandom) {
                 viewModel.filterByRandomCategory()
-                showNewPhrase()
             }
+            showNewPhrase()
         }
         Log.d("MainActivity", "categoryFilter: ${viewModel.categoryFilter}")
     }

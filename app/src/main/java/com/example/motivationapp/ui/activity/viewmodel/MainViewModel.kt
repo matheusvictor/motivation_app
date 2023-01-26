@@ -1,6 +1,7 @@
 package com.example.motivationapp.ui.activity.viewmodel
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import com.example.motivationapp.infra.MotivationAppConstants
 import com.example.motivationapp.model.Phrase
@@ -22,8 +23,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private var _phraseFounded: Phrase? = null
     val phraseFounded: Phrase? get() = _phraseFounded
 
+    private var _phrasesList: List<Phrase>
+
     init {
         _categoryFilter = randomCategory()
+        _phrasesList = getPhrasesByCategory()
         getNextPhrase()
     }
 
@@ -49,7 +53,18 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         _categoryFilter = randomCategory()
     }
 
+    private fun getPhrasesByCategory(): List<Phrase> {
+        return _phrasesDAO.findAllByCategory(_categoryFilter)
+    }
+
     fun getNextPhrase() {
-        _phraseFounded = _phrasesDAO.findByCategoryId(_categoryFilter)
+
+        _phrasesList = _phrasesDAO.findAllByCategory(_categoryFilter)
+        var randomIndex = Random.nextInt(from = 0, until = (_phrasesList.size))
+        Log.d("MainViewModel", "Random Index: $randomIndex")
+
+        Log.d("MainViewModel", _phrasesList.toString())
+        _phraseFounded = _phrasesList[randomIndex]
+        Log.d("MainViewModel", "Founded: $_phraseFounded")
     }
 }
