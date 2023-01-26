@@ -117,12 +117,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         bindingMainActivity.phraseMessage.text =
             viewModel.phraseFounded?.text ?: "There isn't nothing to show here"
         bindingMainActivity.phraseAuthor.text = viewModel.phraseFounded?.author ?: "Unknown"
-        bindingMainActivity.phraseImage.tryLoadImage(viewModel.phraseFounded?.urlImage)
 
         if (viewModel.phraseFounded?.urlImage.isNullOrBlank()) {
             bindingMainActivity.phraseImage.visibility = View.GONE
         } else {
             bindingMainActivity.phraseImage.visibility = View.VISIBLE
+            bindingMainActivity.phraseImage.tryLoadImage(viewModel.phraseFounded?.urlImage)
         }
     }
 }

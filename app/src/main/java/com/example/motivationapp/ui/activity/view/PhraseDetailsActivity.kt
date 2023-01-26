@@ -28,7 +28,6 @@ class PhraseDetailsActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.getPhraseById(intent.getLongExtra(PHRASE_ID, 0L))
         fillFields()
     }
 
@@ -54,9 +53,10 @@ class PhraseDetailsActivity : AppCompatActivity() {
     }
 
     private fun fillFields() {
+        viewModel.getPhraseById(intent.getLongExtra(PHRASE_ID, 0L))
         with(bindingPhraseDetails) {
             phraseDetailsImage.tryLoadImage(viewModel.phraseFounded?.urlImage)
-            phraseDetailsAuthor.text = viewModel.phraseFounded?.text
+            phraseDetailsAuthor.text = viewModel.phraseFounded?.author
             phraseTextDetails.text = viewModel.phraseFounded?.text
         }
     }
