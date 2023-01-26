@@ -16,6 +16,9 @@ interface PhrasesDAO {
     @Query("SELECT * FROM Phrase")
     fun findAll(): List<Phrase>
 
+    @Query("SELECT * FROM Phrase WHERE category = :categoryId")
+    fun findAllByCategory(categoryId: Int): List<Phrase>
+
     @Query("SELECT * FROM Phrase WHERE id = :id")
     fun findById(id: Long): Phrase?
 
