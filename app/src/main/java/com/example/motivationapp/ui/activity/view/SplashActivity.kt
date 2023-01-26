@@ -1,4 +1,4 @@
-package com.example.motivationapp.ui.activity
+package com.example.motivationapp.ui.activity.view
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -11,7 +11,6 @@ import android.widget.Toast
 import com.example.motivationapp.R
 import com.example.motivationapp.infra.MotivationAppConstants
 import com.example.motivationapp.infra.SecurityPreferences
-import com.example.motivationapp.ui.activity.view.MainActivity
 
 class SplashActivity : AppCompatActivity(), View.OnClickListener {
 

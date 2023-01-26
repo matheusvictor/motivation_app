@@ -1,4 +1,4 @@
-package com.example.motivationapp.ui.activity
+package com.example.motivationapp.ui.activity.view
 
 import android.os.Bundle
 import android.util.Log
