@@ -4,11 +4,13 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.example.motivationapp.constants.PHRASE_ID
 import com.example.motivationapp.databinding.ActivityPhraseFormActivityBinding
 import com.example.motivationapp.extensions.tryLoadImage
+import com.example.motivationapp.infra.MotivationAppConstants
 import com.example.motivationapp.model.Phrase
-import com.example.motivationapp.repository.AppDatabase
+import com.example.motivationapp.ui.activity.viewmodel.PhraseFormViewModel
 import com.example.motivationapp.ui.dialog.ImageFormDialog
 
 class PhraseFormActivity : AppCompatActivity() {
@@ -16,36 +18,35 @@ class PhraseFormActivity : AppCompatActivity() {
     private val bindingPhraseFormActivity by lazy {
         ActivityPhraseFormActivityBinding.inflate(layoutInflater)
     }
-
-    private val phrasesDao by lazy {
-        AppDatabase.getInstance(this).phrasesDao()
-    }
-
-    private var phraseId: Long = 0L
-    private var urlImage: String? = null
+    private lateinit var phraseFormViewModel: PhraseFormViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(bindingPhraseFormActivity.root)
+        phraseFormViewModel = ViewModelProvider(this)[PhraseFormViewModel::class.java]
+
         title = "Add New Phrase"
         setSaveButton()
 
         bindingPhraseFormActivity.formImagePhrase.setOnClickListener {
             ImageFormDialog(this)
-                .show(urlImage) {
-                    urlImage = it
-                    bindingPhraseFormActivity.formImagePhrase.tryLoadImage(urlImage)
+                .show(phraseFormViewModel.phraseFounded?.urlImage) {
+                    bindingPhraseFormActivity.formImagePhrase.tryLoadImage(
+                        phraseFormViewModel.phraseFounded?.urlImage
+                    )
                 }
         }
-        phraseId = intent.getLongExtra(PHRASE_ID, 0L)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        fillFields()
     }
 
     private fun setSaveButton() {
-        val saveButton = bindingPhraseFormActivity.btFormSavePhrase
-
-        saveButton.setOnClickListener {
+        bindingPhraseFormActivity.btFormSavePhrase.setOnClickListener {
             val newPhrase = createNewPhrase()
-            phrasesDao.save(newPhrase)
+            phraseFormViewModel.savePhrase(newPhrase)
             Toast.makeText(this, "Created with success", Toast.LENGTH_SHORT).show()
             finish()
         }
@@ -69,8 +70,8 @@ class PhraseFormActivity : AppCompatActivity() {
         }
 
         val newPhrase = Phrase(
-            id = phraseId,
-            urlImage = urlImage,
+            id = 0L,
+            urlImage = "",
             text = phrase,
             author = author,
             category = category
@@ -79,10 +80,30 @@ class PhraseFormActivity : AppCompatActivity() {
         return newPhrase
     }
 
-//    private fun setErrorTextField(error: Boolean) {
+    //    private fun setErrorTextField(error: Boolean) {
 //        if (error) {
 //            bindingPhraseFormActivity.formPhraseText.error = "AA"
 //        }
 //    }
+    private fun fillFields() {
+        val phrase = phraseFormViewModel.findPhraseById(
+            intent.getLongExtra(PHRASE_ID, -1L)
+        )
+
+        phrase?.let {
+            title = "Edit Phrase"
+            bindingPhraseFormActivity.formImagePhrase.tryLoadImage(it.urlImage)
+            bindingPhraseFormActivity.formPhraseText.setText(it.text)
+            bindingPhraseFormActivity.formPhraseAuthor.setText(it.author)
+            if (it.category == MotivationAppConstants.PHRASES_FILTER.GOOD_VIBES) {
+                bindingPhraseFormActivity.radioButtonGoodVibesCategory.isChecked = true
+                bindingPhraseFormActivity.radioButtonBadVibesCategory.isChecked = false
+            } else {
+                bindingPhraseFormActivity.radioButtonBadVibesCategory.isChecked = true
+                bindingPhraseFormActivity.radioButtonGoodVibesCategory.isChecked = false
+            }
+        }
+
+    }
 
 }
