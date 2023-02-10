@@ -22,6 +22,10 @@ class PhraseDetailsViewModel(application: Application) : AndroidViewModel(applic
         _phraseId = _phraseFounded?.id ?: 0L
     }
 
+    fun updatePhrase() {
+        _phrasesDao.update()
+    }
+
     fun removePhrase() {
         _phraseFounded?.let { _phrasesDao.delete(it) }
     }

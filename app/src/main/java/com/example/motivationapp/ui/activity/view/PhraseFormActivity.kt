@@ -25,7 +25,10 @@ class PhraseFormActivity : AppCompatActivity() {
         setContentView(bindingPhraseFormActivity.root)
         phraseFormViewModel = ViewModelProvider(this)[PhraseFormViewModel::class.java]
 
-        title = "Add New Phrase"
+        Log.i("PhraseFormActivity init", phraseFormViewModel.phraseFounded.toString())
+        loadData()
+        Log.i("PhraseFormActivity fnd", phraseFormViewModel.phraseFounded.toString())
+
         setSaveButton()
 
         bindingPhraseFormActivity.formImagePhrase.setOnClickListener {
@@ -40,70 +43,91 @@ class PhraseFormActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        fillFields()
+        title = if (phraseFormViewModel.phraseFounded == null) {
+            "Add New Phrase"
+        } else {
+            "Edit Phrase"
+        }
+        loadPhrasesInformation()
+        Log.i("PhraseFormActivity", "On resume")
     }
 
     private fun setSaveButton() {
         bindingPhraseFormActivity.btFormSavePhrase.setOnClickListener {
-            val newPhrase = createNewPhrase()
-            phraseFormViewModel.savePhrase(newPhrase)
-            Toast.makeText(this, "Created with success", Toast.LENGTH_SHORT).show()
+
+            if (phraseFormViewModel.phraseFounded == null) {
+                val newPhrase = createNewPhrase()
+                phraseFormViewModel.savePhrase(newPhrase)
+                Log.i("PhraseFormActivity add", newPhrase.toString())
+                Toast.makeText(this, "Created with success", Toast.LENGTH_SHORT).show()
+            } else {
+                setPhrasesInformation()
+                phraseFormViewModel.updatePhrase(phraseFormViewModel.phraseFounded!!)
+                Toast.makeText(this, "Updated with success", Toast.LENGTH_SHORT).show()
+                Log.i("PhraseFormActivity up", phraseFormViewModel.phraseFounded!!.toString())
+            }
             finish()
         }
     }
 
     private fun createNewPhrase(): Phrase {
+        val phraseMessage = bindingPhraseFormActivity.formPhraseText.text.toString()
+        if (phraseMessage.isBlank()) setErrorTextField(true)
 
-        val phraseTextView = bindingPhraseFormActivity.formPhraseText
-        val phrase = phraseTextView.text.toString()
-
-//        if (phrase.isBlank()) {
-//            setErrorTextField(true)
-//        }
-
-        val phraseAuthor = bindingPhraseFormActivity.formPhraseAuthor
-        val author = phraseAuthor.text.toString()
+        val author = bindingPhraseFormActivity.formPhraseAuthor.text.toString()
 
         var category = 1
-        if (bindingPhraseFormActivity.radioButtonBadVibesCategory.isChecked) {
-            category = 2
-        }
+        if (bindingPhraseFormActivity.radioButtonBadVibesCategory.isChecked) category = 2
 
         val newPhrase = Phrase(
-            id = 0L,
-            urlImage = "",
-            text = phrase,
+            text = phraseMessage,
             author = author,
             category = category
         )
+
         Log.i("PhraseFormActivity", newPhrase.toString())
         return newPhrase
     }
 
-    //    private fun setErrorTextField(error: Boolean) {
-//        if (error) {
-//            bindingPhraseFormActivity.formPhraseText.error = "AA"
-//        }
-//    }
-    private fun fillFields() {
-        val phrase = phraseFormViewModel.findPhraseById(
-            intent.getLongExtra(PHRASE_ID, -1L)
-        )
+    private fun setErrorTextField(error: Boolean) {
+        if (error) {
+            bindingPhraseFormActivity.formPhraseText.error = "AA"
+        }
+    }
 
-        phrase?.let {
-            title = "Edit Phrase"
+    private fun loadPhrasesInformation() {
+        phraseFormViewModel.phraseFounded?.let {
             bindingPhraseFormActivity.formImagePhrase.tryLoadImage(it.urlImage)
             bindingPhraseFormActivity.formPhraseText.setText(it.text)
             bindingPhraseFormActivity.formPhraseAuthor.setText(it.author)
-            if (it.category == MotivationAppConstants.PHRASES_FILTER.GOOD_VIBES) {
-                bindingPhraseFormActivity.radioButtonGoodVibesCategory.isChecked = true
-                bindingPhraseFormActivity.radioButtonBadVibesCategory.isChecked = false
-            } else {
+            if (it.category == MotivationAppConstants.PHRASES_FILTER.BAD_VIBES) {
                 bindingPhraseFormActivity.radioButtonBadVibesCategory.isChecked = true
                 bindingPhraseFormActivity.radioButtonGoodVibesCategory.isChecked = false
+            } else {
+                bindingPhraseFormActivity.radioButtonGoodVibesCategory.isChecked = true
+                bindingPhraseFormActivity.radioButtonBadVibesCategory.isChecked = false
             }
         }
-
     }
 
+    private fun setPhrasesInformation() {
+        phraseFormViewModel.phraseFounded?.apply {
+            this.text = bindingPhraseFormActivity.formPhraseText.text.toString()
+            this.author = bindingPhraseFormActivity.formPhraseAuthor.text.toString()
+            if (bindingPhraseFormActivity.radioButtonGoodVibesCategory.isChecked) {
+                this.category = 1
+            } else {
+                this.category = 2
+            }
+        }
+    }
+
+    private fun loadData() {
+        val bundle = intent.extras
+
+        bundle?.let {
+            phraseFormViewModel.findPhraseById(intent.getLongExtra(PHRASE_ID, -1L))
+            Log.i("PhraseFormActivity fnd", phraseFormViewModel.phraseFounded.toString())
+        }
+    }
 }

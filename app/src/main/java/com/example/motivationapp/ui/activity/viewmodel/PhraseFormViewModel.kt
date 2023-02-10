@@ -19,16 +19,11 @@ class PhraseFormViewModel(application: Application) : AndroidViewModel(applicati
         return _phraseFounded
     }
 
-    fun saveNewPhrase(phrase: Phrase) {
-        _phrasesDAO.save(phrase)
-    }
-
-    fun tryLoadPhraseDetails(id: Long) {
-        _phraseFounded = _phrasesDAO.findById(id)
-    }
-
     fun savePhrase(phrase: Phrase) {
         _phrasesDAO.save(phrase)
     }
 
+    fun updatePhrase(phrase: Phrase) {
+        _phrasesDAO.update(phrase)
+    }
 }
