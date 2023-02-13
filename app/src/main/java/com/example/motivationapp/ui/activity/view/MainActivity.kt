@@ -80,6 +80,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
             showNewPhrase()
         }
+        Log.d("MainActivity", "list: ${viewModel.phraseList}")
         Log.d("MainActivity", "categoryFilter: ${viewModel.categoryFilter}")
     }
 
@@ -110,19 +111,31 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun showNewPhrase() {
         viewModel.getNextPhrase()
-        updatePhraseDetails()
+        Log.d("MainActivity", "founded: ${viewModel.phraseFounded}")
+        if (viewModel.phraseFounded == null || viewModel.phraseList.isEmpty()) {
+            hidePhraseFields()
+        } else {
+            bindingMainActivity.phraseContent.visibility = View.VISIBLE
+            updatePhraseDetails()
+        }
+    }
+
+    private fun hidePhraseFields() {
+        bindingMainActivity.phraseContent.visibility = View.GONE
     }
 
     private fun updatePhraseDetails() {
-        bindingMainActivity.phraseMessage.text =
-            viewModel.phraseFounded?.text ?: "There isn't nothing to show here"
-        bindingMainActivity.phraseAuthor.text = viewModel.phraseFounded?.author ?: "Unknown"
-
-        if (viewModel.phraseFounded?.urlImage.isNullOrBlank()) {
-            bindingMainActivity.phraseImage.visibility = View.GONE
-        } else {
-            bindingMainActivity.phraseImage.visibility = View.VISIBLE
-            bindingMainActivity.phraseImage.tryLoadImage(viewModel.phraseFounded?.urlImage)
+        viewModel.phraseFounded?.let {
+            with(bindingMainActivity) {
+                this.phraseMessage.text = it.text
+                this.phraseAuthor.text = it.author ?: "Unknown"
+                if (it.urlImage.isNullOrBlank()) {
+                    this.phraseImage.visibility = View.GONE
+                } else {
+                    this.phraseImage.visibility = View.VISIBLE
+                    this.phraseImage.tryLoadImage(it.urlImage)
+                }
+            }
         }
     }
 }

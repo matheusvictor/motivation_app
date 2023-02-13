@@ -24,6 +24,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val phraseFounded: Phrase? get() = _phraseFounded
 
     private var _phrasesList: List<Phrase>
+    val phraseList: List<Phrase> get() = _phrasesList
 
     init {
         _categoryFilter = randomCategory()
@@ -58,13 +59,17 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun getNextPhrase() {
-
         _phrasesList = _phrasesDAO.findAllByCategory(_categoryFilter)
-        var randomIndex = Random.nextInt(from = 0, until = (_phrasesList.size))
-        Log.d("MainViewModel", "Random Index: $randomIndex")
+        Log.d("MainViewModel", "Phrase list: $_phrasesList")
 
-        Log.d("MainViewModel", _phrasesList.toString())
-        _phraseFounded = _phrasesList[randomIndex]
-        Log.d("MainViewModel", "Founded: $_phraseFounded")
+        if (_phrasesList.isEmpty()) {
+            _phraseFounded = null
+        } else {
+            var randomIndex = Random.nextInt(from = 0, until = (_phrasesList.size))
+            Log.d("MainViewModel", "Random Index: $randomIndex")
+            Log.d("MainViewModel", _phrasesList.toString())
+            _phraseFounded = _phrasesList[randomIndex]
+            Log.d("MainViewModel", "Founded: $_phraseFounded")
+        }
     }
 }
