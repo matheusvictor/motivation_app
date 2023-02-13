@@ -2,6 +2,8 @@ package com.example.motivationapp.ui.activity.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.motivationapp.model.Phrase
 import com.example.motivationapp.repository.AppDatabase
 
@@ -11,22 +13,18 @@ class PhraseDetailsViewModel(application: Application) : AndroidViewModel(applic
         AppDatabase.getInstance(application.applicationContext).phrasesDao()
     }
 
-    private var _phraseId: Long = 0L
-    val phraseId get() = _phraseId
+    private val _phraseId = MutableLiveData<Long>()
+    val phraseId: LiveData<Long> get() = _phraseId
 
-    private var _phraseFounded: Phrase? = null
-    val phraseFounded: Phrase? get() = _phraseFounded
+    private var _phraseFounded = MutableLiveData<Phrase?>()
+    val phraseFounded: LiveData<Phrase?> get() = _phraseFounded
 
     fun getPhraseById(id: Long) {
-        _phraseFounded = _phrasesDao.findById(id)
-        _phraseId = _phraseFounded?.id ?: 0L
-    }
-
-    fun updatePhrase() {
-        _phrasesDao.update()
+        _phraseFounded.value = _phrasesDao.findById(id)
+        _phraseId.value = _phraseFounded.value?.id ?: 0L
     }
 
     fun removePhrase() {
-        _phraseFounded?.let { _phrasesDao.delete(it) }
+        _phraseFounded.value?.let { _phrasesDao.delete(it) }
     }
 }

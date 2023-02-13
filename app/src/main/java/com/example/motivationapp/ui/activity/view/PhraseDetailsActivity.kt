@@ -28,7 +28,7 @@ class PhraseDetailsActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        fillFields()
+        observe()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -40,7 +40,7 @@ class PhraseDetailsActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.menu_edit_item -> {
                 Intent(this, PhraseFormActivity::class.java).apply {
-                    putExtra(PHRASE_ID, viewModel.phraseId)
+                    putExtra(PHRASE_ID, viewModel.phraseId.value)
                     startActivity(this)
                 }
             }
@@ -52,12 +52,15 @@ class PhraseDetailsActivity : AppCompatActivity() {
         return super.onContextItemSelected(item)
     }
 
-    private fun fillFields() {
+    private fun observe() {
         viewModel.getPhraseById(intent.getLongExtra(PHRASE_ID, 0L))
-        with(bindingPhraseDetails) {
-            phraseDetailsImage.tryLoadImage(viewModel.phraseFounded?.urlImage)
-            phraseDetailsAuthor.text = viewModel.phraseFounded?.author
-            phraseTextDetails.text = viewModel.phraseFounded?.text
+
+        viewModel.phraseFounded.observe(this) { phrase ->
+            with(bindingPhraseDetails) {
+                this.phraseDetailsImage.tryLoadImage(phrase?.urlImage)
+                this.phraseTextDetails.text = phrase?.text
+                this.phraseDetailsAuthor.text = phrase?.author
+            }
         }
     }
 }
