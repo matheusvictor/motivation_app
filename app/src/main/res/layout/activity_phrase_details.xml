@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".ui.activity.PhraseDetailsActivity">
+        tools:context=".ui.activity.view.PhraseDetailsActivity">
 
         <ImageView
             android:id="@+id/phrase_details_image"

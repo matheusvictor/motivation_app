@@ -13,20 +13,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MotivationApp">
         <activity
-            android:name=".ui.activity.SplashActivity"
+            android:name=".ui.activity.view.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activity.MainActivity" />
-        <activity android:name=".ui.activity.PhraseListActivity" />
+        <activity android:name=".ui.activity.view.MainActivity" />
+        <activity android:name=".ui.activity.view.PhraseListActivity" />
         <activity
             android:name=".ui.recyclerview.adapter.PhraseListAdapter"
             tools:ignore="Instantiatable" />
-        <activity android:name=".ui.activity.PhraseFormActivity" />
-        <activity android:name=".ui.activity.PhraseDetailsActivity" />
+        <activity android:name=".ui.activity.view.PhraseFormActivity" />
+        <activity android:name=".ui.activity.view.PhraseDetailsActivity" />
 
         <meta-data
             android:name="preloaded_fonts"

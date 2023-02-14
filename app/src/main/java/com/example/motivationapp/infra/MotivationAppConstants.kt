@@ -12,8 +12,7 @@ class MotivationAppConstants private constructor() {
     }
 
     object PHRASES_FILTER {
-        val ALL = 1
-        val GOOD_VIBES = 2
-        val BAD_VIBES = 3
+        val GOOD_VIBES = 1
+        val BAD_VIBES = 2
     }
 }

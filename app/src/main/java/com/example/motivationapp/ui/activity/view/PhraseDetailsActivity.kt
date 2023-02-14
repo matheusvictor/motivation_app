@@ -1,41 +1,34 @@
-package com.example.motivationapp.ui.activity
+package com.example.motivationapp.ui.activity.view
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.example.motivationapp.R
 import com.example.motivationapp.constants.PHRASE_ID
 import com.example.motivationapp.databinding.ActivityPhraseDetailsBinding
 import com.example.motivationapp.extensions.tryLoadImage
-import com.example.motivationapp.model.Phrase
-import com.example.motivationapp.repository.AppDatabase
+import com.example.motivationapp.ui.activity.viewmodel.PhraseDetailsViewModel
 
 class PhraseDetailsActivity : AppCompatActivity() {
 
-    private val bindingPhraseDetails by lazy {
-        ActivityPhraseDetailsBinding.inflate(layoutInflater)
-    }
-    private val phrasesDao by lazy {
-        AppDatabase.getInstance(this).phrasesDao()
-    }
-    private var phraseId: Long = 0L
-    private var phrase: Phrase? = null
+    private lateinit var viewModel: PhraseDetailsViewModel
+
+    private val bindingPhraseDetails by lazy { ActivityPhraseDetailsBinding.inflate(layoutInflater) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(bindingPhraseDetails.root)
+        viewModel = ViewModelProvider(this)[PhraseDetailsViewModel::class.java]
+
         title = "Phrase Details"
-        loadPhraseById()
     }
 
     override fun onResume() {
         super.onResume()
-        phrase = phrasesDao.findById(phraseId)
-        phrase?.let {
-            fillFields(it)
-        } ?: finish()
+        observe()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -47,30 +40,27 @@ class PhraseDetailsActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.menu_edit_item -> {
                 Intent(this, PhraseFormActivity::class.java).apply {
-                    putExtra(PHRASE_ID, phraseId)
+                    putExtra(PHRASE_ID, viewModel.phraseId.value)
                     startActivity(this)
                 }
             }
             R.id.menu_delete_item -> {
-                phrase?.let {
-                    phrasesDao.delete(it)
-                }
+                viewModel.removePhrase()
                 finish()
             }
         }
         return super.onContextItemSelected(item)
     }
 
-    private fun loadPhraseById() {
-        phraseId = intent.getLongExtra(PHRASE_ID, 0L)
-    }
+    private fun observe() {
+        viewModel.getPhraseById(intent.getLongExtra(PHRASE_ID, 0L))
 
-    private fun fillFields(phrase: Phrase) {
-        with(bindingPhraseDetails) {
-            phraseDetailsImage.tryLoadImage(phrase.urlImage)
-            phraseDetailsAuthor.text = phrase.author
-            phraseTextDetails.text = phrase.text
+        viewModel.phraseFounded.observe(this) { phrase ->
+            with(bindingPhraseDetails) {
+                this.phraseDetailsImage.tryLoadImage(phrase?.urlImage)
+                this.phraseTextDetails.text = phrase?.text
+                this.phraseDetailsAuthor.text = phrase?.author
+            }
         }
     }
-
 }

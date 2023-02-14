@@ -4,7 +4,6 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.motivationapp.databinding.PhraseItemBinding
 import com.example.motivationapp.extensions.tryLoadImage
@@ -52,11 +51,11 @@ class PhraseListAdapter(
 
             val category = binding.tvCategory
             when (phrase.category) {
-                2 -> {
+                1 -> {
                     category.text = "Good Vibes"
 
                 }
-                3 -> {
+                2 -> {
                     category.text = "Bad Vibes"
                 }
             }
