@@ -62,9 +62,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         _phrasesList = _phrasesDAO.findAllByCategory(_categoryFilter)
         Log.d("MainViewModel", "Phrase list: $_phrasesList")
 
-        if (_phrasesList.isEmpty()) {
-            _phraseFounded = null
-        } else {
+        if (_phrasesList.isNotEmpty()) {
             var randomIndex = Random.nextInt(from = 0, until = (_phrasesList.size))
             Log.d("MainViewModel", "Random Index: $randomIndex")
             Log.d("MainViewModel", _phrasesList.toString())

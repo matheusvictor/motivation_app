@@ -30,41 +30,41 @@ class PhraseFormActivity : AppCompatActivity() {
         Log.i("PhraseFormActivity fnd", phraseFormViewModel.phraseFounded.toString())
 
         setSaveButton()
-
-        bindingPhraseFormActivity.formImagePhrase.setOnClickListener {
-            ImageFormDialog(this)
-                .show(phraseFormViewModel.phraseFounded?.urlImage) {
-                    bindingPhraseFormActivity.formImagePhrase.tryLoadImage(
-                        phraseFormViewModel.phraseFounded?.urlImage
-                    )
-                }
-        }
+        loadImageFromUrl()
     }
 
     override fun onResume() {
         super.onResume()
-        title = if (phraseFormViewModel.phraseFounded == null) {
+        title = if (phraseFormViewModel.phraseFounded.value == null) {
             "Add New Phrase"
         } else {
             "Edit Phrase"
         }
-        loadPhrasesInformation()
+        observe()
         Log.i("PhraseFormActivity", "On resume")
+    }
+
+    private fun observe() {
+        phraseFormViewModel.phraseFounded.observe(this) {
+            if (it != null) {
+                loadPhrasesInformation()
+            }
+        }
     }
 
     private fun setSaveButton() {
         bindingPhraseFormActivity.btFormSavePhrase.setOnClickListener {
 
-            if (phraseFormViewModel.phraseFounded == null) {
+            if (phraseFormViewModel.phraseFounded.value == null) {
                 val newPhrase = createNewPhrase()
                 phraseFormViewModel.savePhrase(newPhrase)
                 Log.i("PhraseFormActivity add", newPhrase.toString())
                 Toast.makeText(this, "Created with success", Toast.LENGTH_SHORT).show()
             } else {
                 setPhrasesInformation()
-                phraseFormViewModel.updatePhrase(phraseFormViewModel.phraseFounded!!)
+                phraseFormViewModel.updatePhrase(phraseFormViewModel.phraseFounded.value!!)
                 Toast.makeText(this, "Updated with success", Toast.LENGTH_SHORT).show()
-                Log.i("PhraseFormActivity up", phraseFormViewModel.phraseFounded!!.toString())
+                Log.i("PhraseFormActivity up", phraseFormViewModel.phraseFounded.toString())
             }
             finish()
         }
@@ -95,12 +95,23 @@ class PhraseFormActivity : AppCompatActivity() {
         }
     }
 
+    private fun loadImageFromUrl() {
+        bindingPhraseFormActivity.formImagePhrase.setOnClickListener {
+            ImageFormDialog(this)
+                .show(phraseFormViewModel.phraseFounded.value?.urlImage) {
+                    bindingPhraseFormActivity.formImagePhrase.tryLoadImage(
+                        phraseFormViewModel.phraseFounded.value?.urlImage
+                    )
+                }
+        }
+    }
+
     private fun loadPhrasesInformation() {
-        phraseFormViewModel.phraseFounded?.let {
-            bindingPhraseFormActivity.formImagePhrase.tryLoadImage(it.urlImage)
-            bindingPhraseFormActivity.formPhraseText.setText(it.text)
-            bindingPhraseFormActivity.formPhraseAuthor.setText(it.author)
-            if (it.category == MotivationAppConstants.PHRASES_FILTER.BAD_VIBES) {
+        phraseFormViewModel.phraseFounded.let {
+            bindingPhraseFormActivity.formImagePhrase.tryLoadImage(it.value?.urlImage)
+            bindingPhraseFormActivity.formPhraseText.setText(it.value?.text)
+            bindingPhraseFormActivity.formPhraseAuthor.setText(it.value?.author)
+            if (it.value?.category == MotivationAppConstants.PHRASES_FILTER.BAD_VIBES) {
                 bindingPhraseFormActivity.radioButtonBadVibesCategory.isChecked = true
                 bindingPhraseFormActivity.radioButtonGoodVibesCategory.isChecked = false
             } else {
@@ -111,13 +122,13 @@ class PhraseFormActivity : AppCompatActivity() {
     }
 
     private fun setPhrasesInformation() {
-        phraseFormViewModel.phraseFounded?.apply {
-            this.text = bindingPhraseFormActivity.formPhraseText.text.toString()
-            this.author = bindingPhraseFormActivity.formPhraseAuthor.text.toString()
+        phraseFormViewModel.phraseFounded.apply {
+            this.value?.text = bindingPhraseFormActivity.formPhraseText.text.toString()
+            this.value?.author = bindingPhraseFormActivity.formPhraseAuthor.text.toString()
             if (bindingPhraseFormActivity.radioButtonGoodVibesCategory.isChecked) {
-                this.category = 1
+                this.value?.category = 1
             } else {
-                this.category = 2
+                this.value?.category = 2
             }
         }
     }
@@ -126,7 +137,7 @@ class PhraseFormActivity : AppCompatActivity() {
         val bundle = intent.extras
 
         bundle?.let {
-            phraseFormViewModel.findPhraseById(intent.getLongExtra(PHRASE_ID, -1L))
+            phraseFormViewModel.getPhraseById(intent.getLongExtra(PHRASE_ID, -1L))
             Log.i("PhraseFormActivity fnd", phraseFormViewModel.phraseFounded.toString())
         }
     }
