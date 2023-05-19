@@ -15,41 +15,41 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/phrase_item" />
 
+    <ImageView
+        android:id="@+id/iv_prev_phrase"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:backgroundTint="@color/white"
+        android:foregroundTint="@color/white"
+        android:src="@drawable/ic_chevron_left"
+        app:layout_constraintBottom_toBottomOf="@id/linear_layout"
+        app:layout_constraintEnd_toStartOf="@id/linear_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:tint="@color/white" />
+
     <LinearLayout
+        android:id="@+id/linear_layout"
         android:layout_width="wrap_content"
-        android:layout_height="20dp"
+        android:layout_height="50dp"
         android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@id/extended_fab"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+         app:layout_constraintStart_toStartOf="parent" />
 
-        <ImageView
-            android:id="@+id/iv_prev_phrase"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_chevron_left" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_view_pager_phrase"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_marginEnd="20dp"
-            android:orientation="horizontal"
-            tools:itemCount="3"
-            tools:listitem="@layout/view_pager_layout">
-
-        </androidx.recyclerview.widget.RecyclerView>
-
-        <ImageView
-            android:id="@+id/iv_next_phrase"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/ic_chevron_right" />
-
-    </LinearLayout>
+    <ImageView
+        android:id="@+id/iv_next_phrase"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:backgroundTint="@color/white"
+        android:foregroundTint="@color/white"
+        android:src="@drawable/ic_chevron_right"
+        app:layout_constraintBottom_toBottomOf="@id/linear_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/linear_layout"
+        app:tint="@color/white" />
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/extended_fab"
