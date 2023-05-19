@@ -5,11 +5,11 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.motivationapp.R
 import com.example.motivationapp.constants.PHRASE_ID
 import com.example.motivationapp.databinding.ActivityPhraseListBinding
@@ -17,13 +17,18 @@ import com.example.motivationapp.databinding.RemoveItemDialogBinding
 import com.example.motivationapp.model.Phrase
 import com.example.motivationapp.repository.AppDatabase
 import com.example.motivationapp.ui.recyclerview.adapter.PhraseListAdapter
-import com.example.motivationapp.ui.recyclerview.adapter.ViewPagerAdapter
 
 class PhraseListActivity : AppCompatActivity(R.layout.activity_phrase_details),
     PhraseListAdapter.LongClickedItem {
 
     private val bindingPhraseListActivity by lazy { ActivityPhraseListBinding.inflate(layoutInflater) }
     private val adapter = PhraseListAdapter(context = this, whenLongClickOnItem = this)
+
+    private lateinit var indicatorLayout: LinearLayout
+    private lateinit var prevPhrase: ImageView
+    private lateinit var nextPhrase: ImageView
+
+    private var currentPage = 0
 
     private val phrasesDAO by lazy {
         AppDatabase.getInstance(this).phrasesDao()
@@ -74,31 +79,61 @@ class PhraseListActivity : AppCompatActivity(R.layout.activity_phrase_details),
     }
 
     private fun setDotsViewPager() {
-        val dotsRecyclerView: RecyclerView = bindingPhraseListActivity.rvViewPagerPhrase
-        val prev = bindingPhraseListActivity.ivPrevPhrase
-        val next = bindingPhraseListActivity.ivNextPhrase
+        setupIndicators(adapter.itemCount)
+    }
 
-        if (adapter.itemCount > 0) {
-            dotsRecyclerView.adapter =
-                ViewPagerAdapter(context = this, mDotsQuant = adapter.itemCount)
+    private fun setupIndicators(count: Int) {
 
-            // Configurando o LinearLayoutManager com orientação horizontal
-            val layoutManager =
-                NonScrollableLinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-            dotsRecyclerView.layoutManager = layoutManager
+        with(bindingPhraseListActivity) {
+            indicatorLayout = this.linearLayout
+            prevPhrase = this.ivPrevPhrase
+            nextPhrase = this.ivNextPhrase
+        }
 
-            prev.setOnClickListener {
-                Toast.makeText(this, "Left", Toast.LENGTH_SHORT).show()
+        prevPhrase.setOnClickListener {
+            if (currentPage > 0) {
+                currentPage--
+                bindingPhraseListActivity.rvPhraseList.smoothScrollToPosition(currentPage)
+                updateIndicators(currentPage)
             }
+        }
 
-            next.setOnClickListener {
-                Toast.makeText(this, "Next", Toast.LENGTH_SHORT).show()
+        nextPhrase.setOnClickListener {
+            if (currentPage < adapter.itemCount - 1) {
+                currentPage++
+                bindingPhraseListActivity.rvPhraseList.smoothScrollToPosition(currentPage)
+                updateIndicators(currentPage)
             }
+        }
 
-        } else {
-            dotsRecyclerView.visibility = View.GONE
-            prev.visibility = View.GONE
-            next.visibility = View.GONE
+        val indicators = arrayOfNulls<ImageView>(count)
+        indicatorLayout.removeAllViews()
+
+        for (i in indicators.indices) {
+            indicators[i] = ImageView(this)
+            indicators[i]?.setImageResource(R.drawable.default_dot)
+            indicators[i]?.setPadding(8, 8, 8, 8)
+            indicatorLayout.addView(indicators[i])
+        }
+
+        updateIndicators(currentPage)
+    }
+
+    private fun updateIndicators(position: Int) {
+        val count = indicatorLayout.childCount
+
+        val circleSize = resources.getDimensionPixelSize(R.dimen.circle_indicator_size)
+        val layoutParams = LinearLayout.LayoutParams(circleSize, circleSize)
+        layoutParams.setMargins(3, 0, 3, 0)
+
+        for (i in 0 until count) {
+            val indicator = indicatorLayout.getChildAt(i) as ImageView
+            indicator.layoutParams = layoutParams
+            if (i == position) {
+                indicator.setImageResource(R.drawable.selected_dot)
+            } else {
+                indicator.setImageResource(R.drawable.default_dot)
+            }
         }
     }
 
